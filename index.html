@@ -6,17 +6,41 @@
     <meta charset="UTF-8">
     <title>-APR DIGITAL - Gerenciamento de Risco Crítico-</title>
     <style>
+	.custom-checkbox {
+    margin-bottom: 10px; /* Adiciona um espaço entre as linhas */
+    position: relative; /* Permite a posição dos textos acima dos checkboxes */
+}
+
+.custom-checkbox input[type="checkbox"] {
+    margin-right: 10px; /* Adiciona um espaço à direita de cada checkbox */
+    position: absolute;
+    top: 15px; /* Ajuste a posição vertical conforme necessário */
+}
+
+.custom-checkbox label {
+    position: absolute;
+    top: -20px; /* Ajusta a posição do texto acima da checkbox */
+}
+
+.custom-checkbox input[type="checkbox"]:first-of-type + label {
+    left: -15px; /* Ajusta a posição de "SIM" */
+}
+
+.custom-checkbox input[type="checkbox"]:nth-of-type(2) + label {
+    left: 35px; /* Ajusta a posição de "NÃO" */
+}
         body {
-	    background: linear-gradient(to right, 
+	      background: linear-gradient(to right, 
                 rgba(255, 255, 255, 0.9), 
                 rgba(211, 211, 211, 0.8),
                 rgba(169, 169, 169, 0.7));
-	    background-blend-mode: screen;
+	    
+    background-blend-mode: screen;
             font-family: Arial, sans-serif;
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-	    }
+        }
 input, textarea {
     border-radius: 10px; /* Arredonda as bordas das caixas de digitação */
     padding: 10px; /* Adiciona um espaçamento interno nas caixas */
@@ -110,25 +134,25 @@ input, textarea {
 <body>
     <div class="header">
         <h1>APR DIGITAL - Gerenciamento de Risco Crítico</h1>
+</div>
+<div class="form-group">
+    <div class="form-line">
+        Nome: <input type="text" name="nome" id="nome" class="inputUser" required>
     </div>
- <div class="form-group">
-    <div class="form-line checkbox-line" style="margin-left: 40px;">
-        Sinto-me bem para realizar essa atividade?<br>
-        <input type="checkbox" name="sinto_bem_sim" id="sinto_bem_sim" class="form-check-input"> SIM<br>
-        <input type="checkbox" name="sinto_bem_nao" id="sinto_bem_nao" class="form-check-input"> NÃO
+    <div class="form-line">
+        Área: <input type="text" name="area" id="area" class="inputUser" required>
     </div>
-    <div class="form-line checkbox-line" style="margin-left: 40px;">
-        As pessoas sabem onde eu estou?<br>    
-        <input type="checkbox" name="sabe_onde_sim" id="sabe_onde_sim" class="form-check-input"> SIM<br>
-        <input type="checkbox" name="sabe_onde_nao" id="sabe_onde_nao" class="form-check-input"> NÃO
+    <div class="form-line" style="display: flex; gap: 20px;">
+        Atividade: <input type="text" name="atividade" id="atividade" class="inputUser" required>
     </div>
-    <div class="form-line checkbox-line" style="margin-left: 40px;">
-        Alguém pode ser afetado por essa atividade?<br>   
-        <input type="checkbox" name="afeta_outras_sim" id="afeta_outras_sim" class="form-check-input"> SIM<br>
-        <input type="checkbox" name="afeta_outras_nao" id="afeta_outras_nao" class="form-check-input"> NÃO
+    <div class="form-line">
+        Matrícula: <input type="text" name="matricula" id="matricula" class="inputUser" required>
+        Data: <input type="date" name="data" id="data" required>
+        Horário: <input type="time" name="horario" id="horario" required>
     </div>
 </div>
-   <div class="form-group">
+
+<div class="form-group">
     <div class="form-line checkbox-line" style="margin-left: 40px;">
         Sinto-me bem para realizar essa atividade?<br>
         <input type="checkbox" name="sinto_bem_sim" id="sinto_bem_sim" class="form-check-input"> SIM<br>
