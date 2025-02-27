@@ -112,43 +112,38 @@ input, textarea {
         <h1>APR DIGITAL - Gerenciamento de Risco Crítico</h1>
     </div>
  <div class="form-group">
-    <div class="form-line">
-        Nome: <input type="text" name="nome" id="nome" class="inputUser" required>
+    <div class="form-line checkbox-line" style="margin-left: 40px;">
+        Sinto-me bem para realizar essa atividade?<br>
+        <input type="checkbox" name="sinto_bem_sim" id="sinto_bem_sim" class="form-check-input"> SIM<br>
+        <input type="checkbox" name="sinto_bem_nao" id="sinto_bem_nao" class="form-check-input"> NÃO
     </div>
-    <div class="form-line">
-        Área: <input type="text" name="area" id="area" class="inputUser" required>
+    <div class="form-line checkbox-line" style="margin-left: 40px;">
+        As pessoas sabem onde eu estou?<br>    
+        <input type="checkbox" name="sabe_onde_sim" id="sabe_onde_sim" class="form-check-input"> SIM<br>
+        <input type="checkbox" name="sabe_onde_nao" id="sabe_onde_nao" class="form-check-input"> NÃO
     </div>
-    <div class="form-line" style="display: flex; gap: 20px;">
-        Atividade: <input type="text" name="atividade" id="atividade" class="inputUser" required>
-    </div>
-    <div class="form-line">
-        Matrícula: <input type="text" name="matricula" id="matricula" class="inputUser" required>
-        Data: <input type="date" name="data" id="data" required>
-        Horário: <input type="time" name="horario" id="horario" required>
+    <div class="form-line checkbox-line" style="margin-left: 40px;">
+        Alguém pode ser afetado por essa atividade?<br>   
+        <input type="checkbox" name="afeta_outras_sim" id="afeta_outras_sim" class="form-check-input"> SIM<br>
+        <input type="checkbox" name="afeta_outras_nao" id="afeta_outras_nao" class="form-check-input"> NÃO
     </div>
 </div>
    <div class="form-group">
-    <div class="form-line checkbox-line">
-	Sinto-me bem para realizar essa atividade?<br>
-        <input type="checkbox" name="sinto_bem_sim" id="sinto_bem_sim" class="form-check-input"> SIM
-	<br>
+    <div class="form-line checkbox-line" style="margin-left: 40px;">
+        Sinto-me bem para realizar essa atividade?<br>
+        <input type="checkbox" name="sinto_bem_sim" id="sinto_bem_sim" class="form-check-input"> SIM<br>
         <input type="checkbox" name="sinto_bem_nao" id="sinto_bem_nao" class="form-check-input"> NÃO
-	<br>
     </div>
-    <div class="form-line checkbox-line">
-	As pessoas sabem onde eu estou?<br>    
-        <input type="checkbox" name="sabe_onde_sim" id="sabe_onde_sim" class="form-check-input"> SIM
-	<br>
+    <div class="form-line checkbox-line" style="margin-left: 40px;">
+        As pessoas sabem onde eu estou?<br>    
+        <input type="checkbox" name="sabe_onde_sim" id="sabe_onde_sim" class="form-check-input"> SIM<br>
         <input type="checkbox" name="sabe_onde_nao" id="sabe_onde_nao" class="form-check-input"> NÃO
-	<br>    
     </div>
-    <div class="form-line checkbox-line">
-	Alguém pode ser afetado por essa atividade?<br>   
-        <input type="checkbox" name="afeta_outras_sim" id="afeta_outras_sim" class="form-check-input"> SIM
-	<br>
+    <div class="form-line checkbox-line" style="margin-left: 40px;">
+        Alguém pode ser afetado por essa atividade?<br>   
+        <input type="checkbox" name="afeta_outras_sim" id="afeta_outras_sim" class="form-check-input"> SIM<br>
         <input type="checkbox" name="afeta_outras_nao" id="afeta_outras_nao" class="form-check-input"> NÃO
-	<br>    
-    </div>
+    </div>	    
 </div>
 
     <p class="warning-text">Se alguma resposta para qualquer controle crítico for "NÃO", a atividade não pode ser realizada. Use o DEVER DE RECUSA!</p>
