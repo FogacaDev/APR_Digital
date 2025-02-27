@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head >
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <meta charset="UTF-8">
     <title>-APR DIGITAL - Gerenciamento de Risco Crítico-</title>
     <style>
@@ -45,6 +47,7 @@ input, textarea {
     border-radius: 10px; /* Arredonda as bordas das caixas de digitação */
     padding: 10px; /* Adiciona um espaçamento interno nas caixas */
     border: 1px solid #ccc; /* Adiciona borda padrão */
+    font-size: 18px; /* Aqui você ajusta o tamanho da fonte nas caixas de digitação */
 	}
 	.form-check-input {
             width: 20px; /* Aumenta o tamanho */
@@ -685,6 +688,74 @@ input, textarea {
         <div class="form-line">Bombeiro:<input type="text" id="danger" required>Ambulância:<input type="text" id="danger" required></div>
         <div class="form-line">Assinatura:<input type="text" id="danger" required></div>
     </div>
+	<!-- Contêiner do formulário -->
+<div id="form-container" style="text-align: center; padding: 20px;">
+    <h2>Formulário</h2>
+    <!-- Seção de Comentários -->
+    <label for="comentarios">Comentários:</label>
+    <textarea id="comentarios" rows="4" cols="50"></textarea>
+    <!-- Botão para gerar PDF -->
+    <button class="btn btn-success btn-lg btn-block" onclick="gerarPDF()">Gerar PDF</button>
+</div>
 
+<!-- Script para gerar o PDF -->
+<script>
+    // Função para gerar o PDF
+    function gerarPDF() {
+        // Configuração para capturar a página inteira
+        const element = document.body;
+        const options = {
+            scale: 1,
+            useCORS: true,
+            logging: true,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: document.documentElement.offsetWidth,
+            windowHeight: document.documentElement.offsetHeight
+        };
+        
+        // Primeiro mostrar um alerta para informar que o processo começou
+        alert("Iniciando a geração do PDF. Pode levar alguns segundos...");
+        
+        // Captura a página com html2canvas
+        html2canvas(element, options).then(function(canvas) {
+            // Captura a imagem da tela
+            const imgData = canvas.toDataURL('image/png');
+            
+            // Cria o documento PDF
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            // Calcula as dimensões para ajustar a imagem à página A4
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const imgX = (pdfWidth - imgWidth * ratio) / 2;
+            
+            // Adiciona a imagem ao PDF
+            pdf.addImage(imgData, 'PNG', imgX, 0, imgWidth * ratio, imgHeight * ratio);
+            
+            // Verifica se precisa de mais páginas devido ao tamanho do conteúdo
+            let heightLeft = imgHeight * ratio - pdfHeight;
+            let position = -pdfHeight; // Posição para a próxima página
+            
+            // Adiciona mais páginas se necessário
+            while (heightLeft > 0) {
+                position = position - pdfHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', imgX, position, imgWidth * ratio, imgHeight * ratio);
+                heightLeft -= pdfHeight;
+            }
+            
+            // Salva o PDF
+            pdf.save("APR_Digital.pdf");
+        }).catch(function(error) {
+            console.error("Erro na geração do PDF:", error);
+            alert("Ocorreu um erro ao gerar o PDF: " + error);
+        });
+    }
+</script>
 </body>
 </html>
