@@ -173,7 +173,7 @@ input, textarea {
     </div>	    
 </div>
 
-    <p class="warning-text">Se alguma resposta para qualquer controle crítico for "NÃO", a atividade não pode ser realizada. Use o DEVER DE RECUSA!</p>
+    <p  class="warning-text" style="font-size: 18px; text-align: center; font-weight: bold; color: red;">Se a resposta para qualquer controle crítico for "NÃO", Use o DEVER DE RECUSA ao final da página até que o problema seja resolvido, então preencha outra APR.</p>
 
     <p>Identifique se a sua atividade envolve algum dos riscos fatais listados abaixo. Na sequência, selecione os controles críticos aplicáveis.</p>
 
@@ -692,13 +692,15 @@ input, textarea {
     </div>
 	<!-- Contêiner do formulário -->
 <div id="form-container" style="text-align: center; padding: 20px;">
-    <h2>Formulário</h2>
+   <h2 style="font-size: 25px; text-align: center; font-weight: bold; color: red; text-decoration: underline;">Dever de Recusa</h2>
     <!-- Seção de Comentários -->
-    <label for="comentarios">Comentários:</label>
-    <textarea id="comentarios" rows="4" cols="50"></textarea>
+   <div style="text-align: center; margin-top: 20px;">
+    <label for="comentarios" style="display: block; font-size: 16px;">Explique o dever de recusa...</label>
+    <textarea id="comentarios" rows="4" cols="50" style="margin: 0 auto; display: block;"></textarea>
+   </div>
     <!-- Botão para gerar PDF -->
-    <button class="btn btn-success btn-lg btn-block" onclick="gerarPDF()">Gerar PDF</button>
-</div>
+    <br><button class="btn btn-success btn-lg btn-block" onclick="gerarPDF()">Gerar PDF</button>
+</div><br>
 
 <!-- Script para gerar o PDF -->
 <script>
