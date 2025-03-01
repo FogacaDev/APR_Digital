@@ -148,30 +148,38 @@ input, textarea {
     <div class="form-line" style="display: flex; gap: 20px;">
         Atividade: <input type="text" name="atividade" id="atividade" class="inputUser" required>
     </div>
-    <div class="form-line">
-        Matrícula: <input type="text" name="matricula" id="matricula" class="inputUser" required>
-        Data: <input type="date" name="data" id="data" required>
-        Horário: <input type="time" name="horario" id="horario" required>
-    </div>
+    <div class="form-line" style="display: flex; gap: 10px; align-items: center; flex-wrap: nowrap;">
+    Matrícula: <input type="text" name="matricula" id="matricula" class="inputUser" required style="width: 100px;">
+    Data: <input type="date" name="data" id="data" required style="width: 140px;">
+    Horário: <input type="time" name="horario" id="horario" required style="width: 120px;">
+</div>
+
 </div>
 
 <div class="form-group">
     <div class="form-line checkbox-line" style="margin-left: 40px;">
-        Sinto-me bem para realizar essa atividade?<br>
-        <input type="radio" name="sinto_bem[]" class="form-check-input"> SIM<br>
-        <input type="radio" name="sinto_bem[]" class="form-check-input"> NÃO
+        <strong>Sinto-me bem para realizar essa atividade?</strong><br>
+        <div style="margin-left: 20px;">
+            <input type="radio" name="sinto_bem[]" class="form-check-input"> SIM<br>
+            <input type="radio" name="sinto_bem[]" class="form-check-input"> NÃO
+        </div>
     </div>
     <div class="form-line checkbox-line" style="margin-left: 40px;">
-        As pessoas sabem onde eu estou?<br>    
-        <input type="radio" name="sabe_onde[]" class="form-check-input"> SIM<br>
-        <input type="radio" name="sabe_onde[]" class="form-check-input"> NÃO
+        <strong>As pessoas sabem onde eu estou?</strong><br>    
+        <div style="margin-left: 20px;">
+            <input type="radio" name="sabe_onde[]" class="form-check-input"> SIM<br>
+            <input type="radio" name="sabe_onde[]" class="form-check-input"> NÃO
+        </div>
     </div>
     <div class="form-line checkbox-line" style="margin-left: 40px;">
-        Alguém pode ser afetado por essa atividade?<br>   
-        <input type="radio" name="afeta_outras[]" class="form-check-input"> SIM<br>
-        <input type="radio" name="afeta_outras[]" class="form-check-input"> NÃO
+        <strong>Alguém pode ser afetado por essa atividade?</strong><br>   
+        <div style="margin-left: 20px;">
+            <input type="radio" name="afeta_outras[]" class="form-check-input"> SIM<br>
+            <input type="radio" name="afeta_outras[]" class="form-check-input"> NÃO
+        </div>
     </div>	    
 </div>
+
 
     <p  class="warning-text" style="font-size: 18px; text-align: center; font-weight: bold; color: red;">Se a resposta para qualquer controle crítico for "NÃO", Use o DEVER DE RECUSA ao final da página até que o problema seja resolvido, então preencha outra APR.</p>
 
