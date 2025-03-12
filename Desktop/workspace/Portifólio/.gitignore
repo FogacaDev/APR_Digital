@@ -1,3 +1,32 @@
+# Ignorar arquivos temporários
+*.log
+*.tmp
+
+# Ignorar arquivos de sistema do Windows/macOS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Ignorar pastas de dependências
+node_modules/
+
+# Ignorar pastas específicas do usuário
+AppData/
+Documents/
+Downloads/
+Pictures/
+Videos/
+Music/
+Saved Games/
+OneDrive/
+
+# Ignorar pastas de editores
+.vscode/
+.idea/
+
+# Ignorar arquivos de configuração
+*.iml
+*.swp
 .DS_Store
 Thumbs.db
 *.log
