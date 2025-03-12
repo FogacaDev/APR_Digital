@@ -27,16 +27,3 @@ OneDrive/
 # Ignorar arquivos de configuração
 *.iml
 *.swp
-.DS_Store
-Thumbs.db
-*.log
-*.tmp
-node_modules/
-AppData/
-Documents/
-Downloads/
-Pictures/
-Videos/
-Music/
-Saved Games/
-OneDrive/
