@@ -61,4 +61,21 @@ function gerarPDF() {
         alert("Ocorreu um erro ao gerar o PDF: " + error);
     });
 }
+    const botao = document.getElementById('btn-acessibilidade');
+  const body = document.body;
 
+  // Carregar preferência salva
+  if (localStorage.getItem("acessibilidade") === "true") {
+    body.classList.add("acessibilidade");
+    botao.innerText = "Desativar Acessibilidade";
+  }
+
+  botao.addEventListener('click', () => {
+    body.classList.toggle('acessibilidade');
+
+    const ativo = body.classList.contains('acessibilidade');
+    botao.innerText = ativo ? "Desativar Acessibilidade" : "Ativar Acessibilidade";
+
+    // Salvar no localStorage
+    localStorage.setItem("acessibilidade", ativo);
+  });
