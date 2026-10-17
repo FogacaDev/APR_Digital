@@ -1,11 +1,25 @@
-﻿import { createBrowserRouter, RouterProvider, Outlet, useNavigate, useLocation } from "react-router-dom";
+﻿import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/lib/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/lib/ui/card";
 import { StepProgress } from "@/features/apr/components/StepProgress";
 import { useAprForm } from "@/features/apr/hooks/useAprForm";
 import { useTriagem } from "@/features/apr/hooks/useTriagem";
-import { Loader2 } from "lucide-react";
+import { useDeverRecusa } from "@/features/apr/hooks/useDeverRecusa";
+import { Loader2, AlertCircle } from "lucide-react";
+
+import { ContextoPage } from "@/features/apr/pages/ContextoPage";
+import { TriagemRiscosPage } from "@/features/apr/pages/TriagemRiscosPage";
+import { ChecklistRiscoPage } from "@/features/apr/pages/ChecklistRiscoPage";
+import { EpisPage } from "@/features/apr/pages/EpisPage";
+import { LocaisEmergenciaPage } from "@/features/apr/pages/LocaisEmergenciaPage";
+import { RevisaoPage } from "@/features/apr/pages/RevisaoPage";
+import { DeverRecusaPage } from "@/features/apr/pages/DeverRecusaPage";
 
 const STEPS = [
   { path: "/contexto", label: "Contexto" },
@@ -20,7 +34,9 @@ const STEPS = [
 function stepIndexFromPath(pathname: string): number {
   if (pathname.startsWith("/risco")) return 3;
   const idx = STEPS.findIndex((s) => s.path === pathname);
-  return idx >= 0 ? idx + 1 : 1;
+  if (idx >= 0) return idx + 1;
+  if (pathname === "/") return 1;
+  return 1;
 }
 
 function Layout() {
@@ -28,6 +44,7 @@ function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
   const triagem = useTriagem();
+  const recusa = useDeverRecusa();
   const currentStep = stepIndexFromPath(location.pathname);
 
   useEffect(() => {
@@ -36,7 +53,7 @@ function Layout() {
 
   if (!hydrated || !draft) {
     return (
-      <div className="min-h-dvh flex items-center justify-center">
+      <div className="min-h-dvh flex items-center justify-center bg-background">
         <div className="flex items-center gap-2">
           <Loader2 className="h-5 w-5 animate-spin text-primary" />
           <span>Carregando APR...</span>
@@ -45,21 +62,33 @@ function Layout() {
     );
   }
 
+  const isRecusaPage = location.pathname === "/recusa";
+
   return (
     <div className="min-h-dvh bg-background text-foreground">
-      <header className="border-b bg-card">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <header className="border-b bg-card sticky top-0 z-10">
+        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl font-bold text-primary">APR Digital</h1>
-            <p className="text-xs text-muted-foreground">Gerenciamento de Risco Critico</p>
+            <h1 className="text-lg font-bold text-primary leading-tight">APR Digital</h1>
+            <p className="text-[10px] text-muted-foreground">
+              Gerenciamento de Risco Critico
+            </p>
           </div>
-          <div className="text-sm text-muted-foreground">
-            {triagem.totalAplicaveis} risco(s) aplicavel(is)
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span>
+              {triagem.totalAplicaveis} risco(s) aplicavel(is)
+            </span>
+            {recusa.temRecusa && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-destructive px-2 py-0.5 text-destructive-foreground font-semibold">
+                <AlertCircle className="h-3 w-3" />
+                Recusa
+              </span>
+            )}
           </div>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pb-24">
         <StepProgress
           current={currentStep}
           total={STEPS.length}
@@ -68,48 +97,35 @@ function Layout() {
 
         <Outlet />
 
-        <div className="flex items-center justify-between gap-3 pt-4 border-t">
-          <Button
-            variant="outline"
-            onClick={() => {
-              if (currentStep === 1) return;
-              navigate(STEPS[currentStep - 2]?.path ?? "/contexto");
-            }}
-            disabled={currentStep === 1}
-          >
-            Voltar
-          </Button>
-          <Button
-            onClick={() => {
-              if (currentStep >= STEPS.length) {
-                navigate("/recusa");
-                return;
-              }
-              navigate(STEPS[currentStep]?.path ?? "/contexto");
-            }}
-          >
-            {currentStep >= STEPS.length ? "Ir para Recusa" : "Proximo"}
-          </Button>
-        </div>
+        {!isRecusaPage && (
+          <div className="fixed bottom-0 left-0 right-0 z-10 bg-background/95 backdrop-blur border-t">
+            <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  if (currentStep === 1) return;
+                  navigate(STEPS[currentStep - 2]?.path ?? "/contexto");
+                }}
+                disabled={currentStep === 1}
+              >
+                Voltar
+              </Button>
+              <Button
+                onClick={() => {
+                  if (currentStep >= STEPS.length) {
+                    navigate("/recusa");
+                    return;
+                  }
+                  navigate(STEPS[currentStep]?.path ?? "/contexto");
+                }}
+              >
+                {currentStep >= STEPS.length ? "Ir para Recusa" : "Proximo"}
+              </Button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
-  );
-}
-
-function Placeholder({ title, description }: { title: string; description: string }) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">
-          Esta tela sera construida no Bloco 4b. Por enquanto, use os botoes
-          <strong> Voltar </strong> e <strong>Proximo</strong> para navegar pelo wizard.
-        </p>
-      </CardContent>
-    </Card>
   );
 }
 
@@ -118,75 +134,15 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      {
-        index: true,
-        element: (
-          <Placeholder
-            title="Bem-vindo ao APR Digital"
-            description="Use 'Proximo' para comecar pelo contexto."
-          />
-        ),
-      },
-      {
-        path: "contexto",
-        element: (
-          <Placeholder
-            title="Contexto"
-            description="Nome, area, atividade, matricula, data, horario + 3 controles de topo."
-          />
-        ),
-      },
-      {
-        path: "triagem",
-        element: (
-          <Placeholder
-            title="Triagem de riscos"
-            description="Grid de 11 cards: Aplicavel / Nao aplicavel / Nao selecionado."
-          />
-        ),
-      },
-      {
-        path: "risco",
-        element: (
-          <Placeholder
-            title="Checklist por risco"
-            description="Uma tela por risco aplicavel, com os controles criticos (SIM / NAO / N/A)."
-          />
-        ),
-      },
-      {
-        path: "epis",
-        element: (
-          <Placeholder title="EPIs" description="Grid de checkboxes dos EPIs necessarios." />
-        ),
-      },
-      {
-        path: "locais",
-        element: (
-          <Placeholder
-            title="Riscos locais + Emergencia"
-            description="Tabela de perigos/controles + bombeiro, ambulancia, assinatura."
-          />
-        ),
-      },
-      {
-        path: "revisao",
-        element: (
-          <Placeholder
-            title="Revisao"
-            description="Resumo da APR + botao Gerar PDF (desabilitado se Dever de Recusa ativo)."
-          />
-        ),
-      },
-      {
-        path: "recusa",
-        element: (
-          <Placeholder
-            title="Dever de Recusa"
-            description="Textarea + botao Registrar Recusa."
-          />
-        ),
-      },
+      { index: true, element: <ContextoPage /> },
+      { path: "contexto", element: <ContextoPage /> },
+      { path: "triagem", element: <TriagemRiscosPage /> },
+      { path: "risco/:riskId", element: <ChecklistRiscoPage /> },
+      { path: "risco", element: <ChecklistRiscoPage /> },
+      { path: "epis", element: <EpisPage /> },
+      { path: "locais", element: <LocaisEmergenciaPage /> },
+      { path: "revisao", element: <RevisaoPage /> },
+      { path: "recusa", element: <DeverRecusaPage /> },
     ],
   },
 ]);
