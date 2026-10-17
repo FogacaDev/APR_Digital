@@ -1,32 +1,23 @@
-# React + TypeScript + Vite
+# APR Digital — Gerenciamento de Risco Crítico
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Aplicação PWA para Análise Preliminar de Risco (APR) em ambiente industrial.
 
-Currently, two official plugins are available:
+## Status
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- ✅ Bloco 1 — Setup e infraestrutura
+- ⏳ Bloco 2 — Domínio
+- ⏳ Bloco 3 — Estado global e regras
+- ⏳ Bloco 4 — UI do wizard
+- ⏳ Bloco 5 — PDF
+- ⏳ Bloco 6 — PWA + polimento
 
-## React Compiler
+## Comandos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
+npm run build
+npm run preview
+npm run typecheck
+npm run lint
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
