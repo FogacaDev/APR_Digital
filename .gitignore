@@ -1,19 +1,24 @@
-# Ignorar pastas do sistema
-AppData/
-Documents/
-Downloads/
-Favorites/
-Pictures/
-Videos/
-OneDrive/
-
-# Ignorar arquivos temporários
+# Logs
+logs
 *.log
-*.tmp
-*.ini
-*.lnk
-*.mp3
-*.jpg
-*.jpeg
-*.png
-*.pdf
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
