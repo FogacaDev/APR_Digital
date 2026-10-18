@@ -1,4 +1,4 @@
-{
+﻿{
   "compilerOptions": {
     "target": "ES2022",
     "useDefineForClassFields": true,
@@ -19,7 +19,6 @@
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

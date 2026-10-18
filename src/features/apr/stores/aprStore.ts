@@ -21,7 +21,11 @@ const emptyControlesTopo = (): ControlesTopo => [
   { id: "afeta_outros", texto: "Alguém pode ser afetado por essa atividade?", resposta: null },
 ];
 
-const emptyEpis = (): EpisData => ({ selecionados: [], luvas: "", outros: "" });
+const emptyEpis = (): EpisData => ({
+  selecionados: [],
+  luvas: "",
+  outros: "",
+});
 
 const emptyEmergencia = (): EmergenciaData => ({
   bombeiro: "",
@@ -62,11 +66,23 @@ export function createEmptyDraft(): AprDraft {
 function emptyRespostaRisco(riskId: string): RespostaRisco {
   const risk = getRiskById(riskId);
   if (!risk) {
-    return { controles: {}, secaoNaoAplica: false, origemNA: null, respondidoEm: null };
+    return {
+      controles: {},
+      secaoNaoAplica: false,
+      origemNA: null,
+      respondidoEm: null,
+    };
   }
   const controles: Record<string, RespostaControle> = {};
-  for (const c of risk.controles) controles[c.id] = null;
-  return { controles, secaoNaoAplica: false, origemNA: null, respondidoEm: null };
+  for (const c of risk.controles) {
+    controles[c.id] = null;
+  }
+  return {
+    controles,
+    secaoNaoAplica: false,
+    origemNA: null,
+    respondidoEm: null,
+  };
 }
 
 interface AprState {
@@ -109,8 +125,11 @@ export const useAprStore = create<AprState>()((set, get) => ({
 
   hydrate: async () => {
     const current = await aprRepository.getCurrentDraft();
-    if (current) set({ draft: current, hydrated: true });
-    else set({ draft: createEmptyDraft(), hydrated: true });
+    if (current) {
+      set({ draft: current, hydrated: true });
+    } else {
+      set({ draft: createEmptyDraft(), hydrated: true });
+    }
   },
 
   setContexto: (campo, valor) => {
@@ -157,7 +176,9 @@ export const useAprStore = create<AprState>()((set, get) => ({
         const risk = getRiskById(riskId);
         if (risk) {
           const controles: Record<string, RespostaControle> = {};
-          for (const c of risk.controles) controles[c.id] = "nao_aplica";
+          for (const c of risk.controles) {
+            controles[c.id] = "nao_aplica";
+          }
           novasRespostas[riskId] = {
             controles,
             secaoNaoAplica: true,
@@ -167,7 +188,9 @@ export const useAprStore = create<AprState>()((set, get) => ({
         }
       }
 
-      if (estado === "nao_selecionado") delete novasRespostas[riskId];
+      if (estado === "nao_selecionado") {
+        delete novasRespostas[riskId];
+      }
 
       return {
         draft: {
@@ -187,7 +210,9 @@ export const useAprStore = create<AprState>()((set, get) => ({
       const risk = getRiskById(riskId);
       if (!risk) return state;
       const controles: Record<string, RespostaControle> = {};
-      for (const c of risk.controles) controles[c.id] = "nao_aplica";
+      for (const c of risk.controles) {
+        controles[c.id] = "nao_aplica";
+      }
       return {
         draft: {
           ...state.draft,
@@ -213,7 +238,9 @@ export const useAprStore = create<AprState>()((set, get) => ({
       const risk = getRiskById(riskId);
       if (!risk) return state;
       const controles: Record<string, RespostaControle> = {};
-      for (const c of risk.controles) controles[c.id] = null;
+      for (const c of risk.controles) {
+        controles[c.id] = null;
+      }
       return {
         draft: {
           ...state.draft,
@@ -381,7 +408,11 @@ export const useAprStore = create<AprState>()((set, get) => ({
   finalizar: async () => {
     const { draft } = get();
     if (!draft) return;
-    const finalizado: AprDraft = { ...draft, status: "finalizado", updatedAt: Date.now() };
+    const finalizado: AprDraft = {
+      ...draft,
+      status: "finalizado",
+      updatedAt: Date.now(),
+    };
     set({ draft: finalizado });
     await aprRepository.save(finalizado);
   },
@@ -389,16 +420,24 @@ export const useAprStore = create<AprState>()((set, get) => ({
   recusar: async () => {
     const { draft } = get();
     if (!draft) return;
-    const recusado: AprDraft = { ...draft, status: "recusado", updatedAt: Date.now() };
+    const recusado: AprDraft = {
+      ...draft,
+      status: "recusado",
+      updatedAt: Date.now(),
+    };
     set({ draft: recusado });
     await aprRepository.save(recusado);
   },
 
-  resetApr: () => set({ draft: createEmptyDraft() }),
+  resetApr: () => {
+    set({ draft: createEmptyDraft() });
+  },
 
   saveNow: async () => {
     const { draft } = get();
-    if (draft) await aprRepository.save(draft);
+    if (draft) {
+      await aprRepository.save(draft);
+    }
   },
 }));
 
