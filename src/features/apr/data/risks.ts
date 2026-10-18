@@ -1,4 +1,4 @@
-﻿export interface ControleCritico {
+export interface ControleCritico {
   id: string;
   texto: string;
   obrigatorio: boolean;
@@ -17,36 +17,36 @@ export const RISK_CATEGORIES: RiskCategory[] = [
   {
     id: "afogamento",
     nome: "Afogamento",
-    descricao: "Trabalho proximo ou sobre agua, diques, piscinas, rios.",
+    descricao: "Trabalho próximo ou sobre água, diques, piscinas, rios.",
     icone: "Waves",
     controles: [
       {
         id: "flutuacao",
-        texto: "Os dispositivos de flutuacao estao disponiveis e em boas condicoes?",
+        texto: "Os dispositivos de flutuação estão disponíveis e em boas condições?",
         obrigatorio: true,
       },
       {
         id: "protecao_queda_agua",
-        texto: "Os equipamentos de protecao ou barreiras contra queda estao sendo utilizados?",
+        texto: "Os equipamentos de proteção ou barreiras contra queda estão sendo utilizados?",
         obrigatorio: true,
       },
       {
         id: "superficie_estavel",
         texto:
-          "A superficie onde o equipamento movel esta operando e estavel e oferece um bom suporte para evitar escorregamentos, atolamento e deslizamentos?",
+          "A superfície onde o equipamento móvel está operando é estável e oferece um bom suporte para evitar escorregamentos, atolamento e deslizamentos?",
         obrigatorio: true,
       },
     ],
   },
   {
     id: "espaco_confinado",
-    nome: "Espaco Confinado",
-    descricao: "Tanques, silos, tubulacoes, poroes, galerias e espacos com ventilacao limitada.",
+    nome: "Espaço Confinado",
+    descricao: "Tanques, silos, tubulações, porões, galerias e espaços com ventilação limitada.",
     icone: "Container",
     controles: [
       {
         id: "teste_atmosferico",
-        texto: "Foi realizado teste atmosferico e monitoramento continuo?",
+        texto: "Foi realizado teste atmosférico e monitoramento contínuo?",
         obrigatorio: true,
       },
       {
@@ -56,12 +56,12 @@ export const RISK_CATEGORIES: RiskCategory[] = [
       },
       {
         id: "exaustao_ventilacao",
-        texto: "Existe exaustao/ventilacao de acordo com a avaliacao da tarefa?",
+        texto: "Existe exaustão/ventilação de acordo com a avaliação da tarefa?",
         obrigatorio: true,
       },
       {
         id: "sucata_porao",
-        texto: "(SF) O porao esta isento de sucata?",
+        texto: "(SF) O porão está isento de sucata?",
         obrigatorio: true,
       },
     ],
@@ -69,7 +69,7 @@ export const RISK_CATEGORIES: RiskCategory[] = [
   {
     id: "eletricidade",
     nome: "Contato com Eletricidade",
-    descricao: "Trabalho em paineis, linhas vivas, manutencao eletrica, ferramentas energizadas.",
+    descricao: "Trabalho em painéis, linhas vivas, manutenção elétrica, ferramentas energizadas.",
     icone: "Zap",
     controles: [
       {
@@ -84,61 +84,61 @@ export const RISK_CATEGORIES: RiskCategory[] = [
       },
       {
         id: "epi_eletricidade",
-        texto: "EPI especifico para atividade com eletricidade em boas condicoes?",
+        texto: "EPI específico para atividade com eletricidade em boas condições?",
         obrigatorio: true,
       },
       {
         id: "ferramentas_eletroportateis",
-        texto: "As ferramentas eletroportateis estao devidamente inspecionadas e em boas condicoes?",
+        texto: "As ferramentas eletroportáteis estão devidamente inspecionadas e em boas condições?",
         obrigatorio: true,
       },
       {
         id: "dr_testado",
-        texto: "Para equipamentos eletricos portateis existe DR e este foi testado?",
+        texto: "Para equipamentos elétricos portáteis existe DR e este foi testado?",
         obrigatorio: true,
       },
       {
         id: "ppt_alta_tensao",
         texto:
-          "Para atividades em equipamentos energizados ou linha viva de alta tensao, existe a PPT aprovada?",
+          "Para atividades em equipamentos energizados ou linha viva de alta tensão, existe a PPT aprovada?",
         obrigatorio: true,
       },
     ],
   },
   {
     id: "veiculos_moveis",
-    nome: "Veiculos e equipamentos Moveis",
-    descricao: "Operacao de veiculos, empilhadeiras, caminhoes e equipamentos moveis.",
+    nome: "Veículos e equipamentos Móveis",
+    descricao: "Operação de veículos, empilhadeiras, caminhões e equipamentos móveis.",
     icone: "Truck",
     controles: [
       {
         id: "inspecao_previa",
-        texto: "Foi realizada inspecao previa do veiculo/equipamento antes do uso?",
+        texto: "Foi realizada inspeção prévia do veículo/equipamento antes do uso?",
         obrigatorio: true,
       },
       {
         id: "fadiga_medicacao",
-        texto: "Voce esta bem descansado e livre dos efeitos da fadiga e/ou medicacao?",
+        texto: "Você está bem descansado e livre dos efeitos da fadiga e/ou medicação?",
         obrigatorio: true,
       },
       {
         id: "calcos",
-        texto: "Os calcos disponiveis estao de acordo com o padrao da CBA?",
+        texto: "Os calços disponíveis estão de acordo com o padrão da CBA?",
         obrigatorio: true,
       },
       {
         id: "cinto_seguranca",
-        texto: "Durante a operacao/deslocamento, o cinto de seguranca esta sendo utilizado?",
+        texto: "Durante a operação/deslocamento, o cinto de segurança está sendo utilizado?",
         obrigatorio: true,
       },
       {
         id: "limite_velocidade",
-        texto: "Os limites de velocidade estao sendo cumpridos?",
+        texto: "Os limites de velocidade estão sendo cumpridos?",
         obrigatorio: true,
       },
       {
         id: "segregacao",
-        texto: "Existe segregacao de veiculos e pedestres?",
+        texto: "Existe segregação de veículos e pedestres?",
         obrigatorio: true,
       },
     ],
@@ -146,34 +146,34 @@ export const RISK_CATEGORIES: RiskCategory[] = [
   {
     id: "cargas_suspensas",
     nome: "Cargas Suspensas",
-    descricao: "Icamento com guindaste, guindauto, ponte rolante e movimentacao de cargas.",
+    descricao: "Içamento com guindaste, guindauto, ponte rolante e movimentação de cargas.",
     icone: "Package",
     controles: [
       {
         id: "linha_de_fogo",
-        texto: "As pessoas estao fora da linha de fogo da carga?",
+        texto: "As pessoas estão fora da linha de fogo da carga?",
         obrigatorio: true,
       },
       {
         id: "isolamento_360",
         texto:
-          "O isolamento para a atividade tem uma cobertura de 360 graus para evitar acesso nao intencional de pessoas?",
+          "O isolamento para a atividade tem uma cobertura de 360 graus para evitar acesso não intencional de pessoas?",
         obrigatorio: true,
       },
       {
         id: "dispositivos_de_icamento",
         texto:
-          "Os equipamentos e dispositivos de icamento estao inspecionados e em boas condicoes de uso?",
+          "Os equipamentos e dispositivos de içamento estão inspecionados e em boas condições de uso?",
         obrigatorio: true,
       },
       {
         id: "guindaste_guindauto",
-        texto: "O guindaste/guindauto esta operando em solo com condicao estavel?",
+        texto: "O guindaste/guindauto está operando em solo com condição estável?",
         obrigatorio: true,
       },
       {
         id: "carga_rigging",
-        texto: "Foi realizado um plano de carga/rigging para a atividade de icamento?",
+        texto: "Foi realizado um plano de carga/rigging para a atividade de içamento?",
         obrigatorio: true,
       },
     ],
@@ -181,12 +181,12 @@ export const RISK_CATEGORIES: RiskCategory[] = [
   {
     id: "metais_fundidos",
     nome: "Metais Fundidos",
-    descricao: "Operacao de fornos, drenagem, escumacao e contato com metal liquido.",
+    descricao: "Operação de fornos, drenagem, escumação e contato com metal líquido.",
     icone: "Flame",
     controles: [
       {
         id: "veiculo_cabinado",
-        texto: "Veiculo totalmente cabinado para atividades nos fornos?",
+        texto: "Veículo totalmente cabinado para atividades nos fornos?",
         obrigatorio: true,
       },
       {
@@ -197,30 +197,30 @@ export const RISK_CATEGORIES: RiskCategory[] = [
       },
       {
         id: "pre_aquecimento",
-        texto: "Pre aquecimento das ferramentas antes de entrar em contato com metal?",
+        texto: "Pré-aquecimento das ferramentas antes de entrar em contato com metal?",
         obrigatorio: true,
       },
       {
         id: "fornos_isentos_fogo",
-        texto: "(SF) Os fornos estao isentos de fogo no topo e nao ha camisa avermelhada?",
+        texto: "(SF) Os fornos estão isentos de fogo no topo e não há camisa avermelhada?",
         obrigatorio: true,
       },
     ],
   },
   {
     id: "escavacao",
-    nome: "Escavacao",
-    descricao: "Abertura de valas, cavas, pocos, trincheiras e movimentacao de terra.",
+    nome: "Escavação",
+    descricao: "Abertura de valas, cavas, poços, trincheiras e movimentação de terra.",
     icone: "Shovel",
     controles: [
       {
         id: "protecao_desmoronamento",
-        texto: "A protecao contra desmoronamentos foi implementada?",
+        texto: "A proteção contra desmoronamentos foi implementada?",
         obrigatorio: true,
       },
       {
         id: "controle_acesso_escavacao",
-        texto: "Existe controle de acesso para as areas de escavacao?",
+        texto: "Existe controle de acesso para as áreas de escavação?",
         obrigatorio: true,
       },
       {
@@ -230,15 +230,15 @@ export const RISK_CATEGORIES: RiskCategory[] = [
       },
       {
         id: "permissao_trabalho",
-        texto: "A permissao de trabalho foi preenchida e validada?",
+        texto: "A permissão de trabalho foi preenchida e validada?",
         obrigatorio: true,
       },
     ],
   },
   {
     id: "protecao_maquinas",
-    nome: "Protecao de Maquinas",
-    descricao: "Operacao, limpeza ou manutencao de maquinas com partes moveis.",
+    nome: "Proteção de Máquinas",
+    descricao: "Operação, limpeza ou manutenção de máquinas com partes móveis.",
     icone: "Cog",
     controles: [
       {
@@ -248,25 +248,25 @@ export const RISK_CATEGORIES: RiskCategory[] = [
       },
       {
         id: "botoeiras_emergencia",
-        texto: "Voce sabe onde ficam as botoeiras de emergencia?",
+        texto: "Você sabe onde ficam as botoeiras de emergência?",
         obrigatorio: true,
       },
       {
         id: "barreiras_fisicas",
-        texto: "Existem barreiras fisicas e enclausuramento de partes moveis?",
+        texto: "Existem barreiras físicas e enclausuramento de partes móveis?",
         obrigatorio: true,
       },
       {
         id: "sensores_equipamentos",
-        texto: "Os sensores dos equipamentos estao funcionando corretamente?",
+        texto: "Os sensores dos equipamentos estão funcionando corretamente?",
         obrigatorio: true,
       },
     ],
   },
   {
     id: "energia_inesperada",
-    nome: "Liberacao Inesperada de Energia",
-    descricao: "Sistemas pressurizados, molas, contrapesos e fluidos sob pressao.",
+    nome: "Liberação Inesperada de Energia",
+    descricao: "Sistemas pressurizados, molas, contrapesos e fluidos sob pressão.",
     icone: "Gauge",
     controles: [
       {
@@ -276,64 +276,64 @@ export const RISK_CATEGORIES: RiskCategory[] = [
       },
       {
         id: "equipamentos_alta_pressao",
-        texto: "Os equipamentos de alta pressao foram inspecionados antes do uso?",
+        texto: "Os equipamentos de alta pressão foram inspecionados antes do uso?",
         obrigatorio: true,
       },
       {
         id: "equipamentos_valvula_alivio",
         texto:
-          "Os equipamentos de alta pressao possuem valvula de alivio e estas estao em boas condicoes?",
+          "Os equipamentos de alta pressão possuem válvula de alívio e estas estão em boas condições?",
         obrigatorio: true,
       },
       {
         id: "manometros_limites",
-        texto: "Os manometros mostram claramente os limites de operacao?",
+        texto: "Os manômetros mostram claramente os limites de operação?",
         obrigatorio: true,
       },
       {
         id: "dispositivos_protecao",
-        texto: "Existem dispositivos de protecao anti-chicoteamento nas mangueiras?",
+        texto: "Existem dispositivos de proteção anti-chicoteamento nas mangueiras?",
         obrigatorio: true,
       },
       {
         id: "risco_estouro_temperatura",
         texto:
-          "Para risco de estouro de pneus, foi verificado se a temperatura esta dentro da margem de seguranca?",
+          "Para risco de estouro de pneus, foi verificado se a temperatura está dentro da margem de segurança?",
         obrigatorio: true,
       },
       {
         id: "risco_estouro_barreiras",
         texto:
-          "Para risco de estouro de pneus, existem barreiras de seguranca aprovada antes de encher os pneus?",
+          "Para risco de estouro de pneus, existem barreiras de segurança aprovada antes de encher os pneus?",
         obrigatorio: true,
       },
     ],
   },
   {
     id: "quimicos",
-    nome: "Substancias Quimicas Perigosas",
-    descricao: "Manuseio, transporte e armazenamento de produtos quimicos perigosos.",
+    nome: "Substâncias Químicas Perigosas",
+    descricao: "Manuseio, transporte e armazenamento de produtos químicos perigosos.",
     icone: "FlaskConical",
     controles: [
       {
         id: "epis_produtos_quimicos",
-        texto: "EPIs especificos para atividades com produtos quimicos estao sendo utilizados?",
+        texto: "EPIs específicos para atividades com produtos químicos estão sendo utilizados?",
         obrigatorio: true,
       },
       {
         id: "bloqueio_teste_verificacao",
-        texto: "Foi realizado o processo de Bloqueio, Teste e Verificacao do Sistema/Equipamento?",
+        texto: "Foi realizado o processo de Bloqueio, Teste e Verificação do Sistema/Equipamento?",
         obrigatorio: true,
       },
       {
         id: "produtos_quimicos_identificados",
-        texto: "Os produtos quimicos estao identificados e voce tem acesso a FDS do produto?",
+        texto: "Os produtos químicos estão identificados e você tem acesso à FDS do produto?",
         obrigatorio: true,
       },
       {
         id: "emergencia_produto_quimico",
         texto:
-          "Voce sabe o que fazer em caso de emergencia com o produto quimico que esta usando?",
+          "Você sabe o que fazer em caso de emergência com o produto químico que está usando?",
         obrigatorio: true,
       },
     ],
@@ -347,19 +347,19 @@ export const RISK_CATEGORIES: RiskCategory[] = [
       {
         id: "barreira_preventiva_quedas",
         texto:
-          "Existem barreira fisica de prevencao de quedas (Ex: Guarda-corpo e limitador de acesso)?",
+          "Existem barreira física de prevenção de quedas (Ex: Guarda-corpo e limitador de acesso)?",
         obrigatorio: true,
       },
       {
         id: "epis_trabalho_altura",
         texto:
-          "Os EPIs de trabalho em altura foram previamente inspecionados e estao em boas condicoes de uso?",
+          "Os EPIs de trabalho em altura foram previamente inspecionados e estão em boas condições de uso?",
         obrigatorio: true,
       },
       {
         id: "cinto_ancoragem",
         texto:
-          "100% do tempo com o cinto de seguranca fixado em ponto de ancoragem adequado?",
+          "100% do tempo com o cinto de segurança fixado em ponto de ancoragem adequado?",
         obrigatorio: true,
       },
       {
@@ -369,13 +369,13 @@ export const RISK_CATEGORIES: RiskCategory[] = [
       },
       {
         id: "andaime_liberado",
-        texto: "O andaime esta liberado para uso?",
+        texto: "O andaime está liberado para uso?",
         obrigatorio: true,
       },
       {
         id: "equipamentos_trabalho_altura",
         texto:
-          "Os equipamentos de trabalho em altura (plataformas, escadas, etc.) foram previsamente inspecionados e estao em boas condicoes de uso?",
+          "Os equipamentos de trabalho em altura (plataformas, escadas, etc.) foram previsamente inspecionados e estão em boas condições de uso?",
         obrigatorio: true,
       },
     ],
