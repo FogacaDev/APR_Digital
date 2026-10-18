@@ -1,9 +1,18 @@
-﻿import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/lib/ui/card";
+﻿import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/lib/ui/card";
 import { Input } from "@/lib/ui/input";
 import { Label } from "@/lib/ui/label";
 import { Button } from "@/lib/ui/button";
 import { useAprForm } from "@/features/apr/hooks/useAprForm";
-import { Plus, Trash2 } from "lucide-react";
+import { useAprStore } from "@/features/apr/stores/aprStore";
+import { SignaturePad } from "@/features/apr/components/SignaturePad";
+import { Plus, Trash2, Type, PenLine } from "lucide-react";
 
 export function LocaisEmergenciaPage() {
   const {
@@ -13,6 +22,12 @@ export function LocaisEmergenciaPage() {
     setRiscoLocalCampo,
     setEmergencia,
   } = useAprForm();
+  const setAssinatura = useAprStore((s) => s.setAssinatura);
+
+  const [modoAssinatura, setModoAssinatura] = useState<"texto" | "desenho">(
+    draft?.emergencia.assinaturaDataUrl ? "desenho" : "texto"
+  );
+
   if (!draft) return null;
 
   return (
@@ -31,16 +46,23 @@ export function LocaisEmergenciaPage() {
             <span className="w-9" />
           </div>
           {draft.riscosLocais.map((risco, idx) => (
-            <div key={idx} className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2">
+            <div
+              key={idx}
+              className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2"
+            >
               <Input
                 placeholder="Perigo"
                 value={risco.perigo}
-                onChange={(e) => setRiscoLocalCampo(idx, "perigo", e.target.value)}
+                onChange={(e) =>
+                  setRiscoLocalCampo(idx, "perigo", e.target.value)
+                }
               />
               <Input
                 placeholder="Controle"
                 value={risco.controle}
-                onChange={(e) => setRiscoLocalCampo(idx, "controle", e.target.value)}
+                onChange={(e) =>
+                  setRiscoLocalCampo(idx, "controle", e.target.value)
+                }
               />
               <Button
                 variant="ghost"
@@ -53,7 +75,12 @@ export function LocaisEmergenciaPage() {
               </Button>
             </div>
           ))}
-          <Button variant="outline" size="sm" onClick={addRiscoLocal} className="mt-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addRiscoLocal}
+            className="mt-2"
+          >
             <Plus className="h-4 w-4" />
             Adicionar linha
           </Button>
@@ -88,14 +115,54 @@ export function LocaisEmergenciaPage() {
               />
             </div>
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="assinatura">Assinatura</Label>
-            <Input
-              id="assinatura"
-              placeholder="Nome de quem preencheu"
-              value={draft.emergencia.assinatura}
-              onChange={(e) => setEmergencia("assinatura", e.target.value)}
-            />
+
+          <div className="space-y-2">
+            <Label>Assinatura</Label>
+            <div className="inline-flex rounded-lg border border-border p-1 bg-muted/30">
+              <button
+                type="button"
+                onClick={() => {
+                  setModoAssinatura("texto");
+                  setAssinatura(null);
+                }}
+                className={
+                  "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition " +
+                  (modoAssinatura === "texto"
+                    ? "bg-background shadow-sm"
+                    : "text-muted-foreground hover:text-foreground")
+                }
+              >
+                <Type className="h-3.5 w-3.5" />
+                Digitar nome
+              </button>
+              <button
+                type="button"
+                onClick={() => setModoAssinatura("desenho")}
+                className={
+                  "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition " +
+                  (modoAssinatura === "desenho"
+                    ? "bg-background shadow-sm"
+                    : "text-muted-foreground hover:text-foreground")
+                }
+              >
+                <PenLine className="h-3.5 w-3.5" />
+                Desenhar
+              </button>
+            </div>
+
+            {modoAssinatura === "texto" ? (
+              <Input
+                id="assinatura"
+                placeholder="Seu nome completo"
+                value={draft.emergencia.assinatura}
+                onChange={(e) => setEmergencia("assinatura", e.target.value)}
+              />
+            ) : (
+              <SignaturePad
+                value={draft.emergencia.assinaturaDataUrl}
+                onChange={(dataUrl) => setAssinatura(dataUrl)}
+              />
+            )}
           </div>
         </CardContent>
       </Card>
