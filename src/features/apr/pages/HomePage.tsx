@@ -66,11 +66,7 @@ export function HomePage() {
                   Continue de onde parou ou comece uma nova.
                 </p>
               </div>
-              <Button
-                className="w-full"
-                size="lg"
-                onClick={iniciarApr}
-              >
+              <Button className="w-full" size="lg" onClick={iniciarApr}>
                 <FileText className="h-4 w-4" />
                 Continuar APR
               </Button>
@@ -88,11 +84,7 @@ export function HomePage() {
               </Button>
             </>
           ) : (
-            <Button
-              className="w-full"
-              size="lg"
-              onClick={iniciarApr}
-            >
+            <Button className="w-full" size="lg" onClick={iniciarApr}>
               Iniciar nova APR
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -152,16 +144,10 @@ export function HomePage() {
           </div>
 
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setMostrarConsent(false)}
-            >
+            <Button variant="outline" onClick={() => setMostrarConsent(false)}>
               Cancelar
             </Button>
-            <Button
-              disabled={!checkboxMarcado}
-              onClick={confirmarConsentimento}
-            >
+            <Button disabled={!checkboxMarcado} onClick={confirmarConsentimento}>
               Aceitar e comecar
             </Button>
           </DialogFooter>
@@ -170,7 +156,6 @@ export function HomePage() {
 
       <PrivacyNotice open={mostrarAviso} onOpenChange={setMostrarAviso} />
       
-      {/* Banner de instalacao PWA */}
       <PwaInstallPrompt />
     </div>
   );
