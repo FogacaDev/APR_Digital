@@ -16,7 +16,6 @@ export default defineConfig({
         clientsClaim: true,
         skipWaiting: true,
         navigateFallback: "/index.html",
-        // Aumenta o limite para 4 MiB (o PDF em dev fica ~2.7 MB)
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },
       devOptions: {
@@ -33,13 +32,21 @@ export default defineConfig({
     port: 5173,
     strictPort: false,
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: "globalThis",
+      },
+    },
+  },
+  define: {
+    global: "globalThis",
+  },
   build: {
     rollupOptions: {
       output: {
         manualChunks: {
-          // Separa o @react-pdf/renderer num chunk que so carrega quando usado
           "react-pdf": ["@react-pdf/renderer"],
-          // Separa o driver.js (tour) — so e usado uma vez
           "driver": ["driver.js"],
         },
       },

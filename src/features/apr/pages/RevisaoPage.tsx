@@ -1,7 +1,13 @@
 ﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/lib/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/lib/ui/card";
 import { Button } from "@/lib/ui/button";
 import { Badge } from "@/lib/ui/badge";
 import { useAprForm } from "@/features/apr/hooks/useAprForm";
@@ -19,19 +25,22 @@ export function RevisaoPage() {
 
   if (!draft) return null;
 
-  const contextoOk = Object.values(draft.contexto).every((v) => v.trim().length > 0);
+  const contextoOk = Object.values(draft.contexto).every(
+    (v) => v.trim().length > 0
+  );
   const topOk = draft.controlesTopo.every((c) => c.resposta !== null);
+  const assinaturaOk =
+    !!draft.emergencia.assinatura || !!draft.emergencia.assinaturaDataUrl;
 
   async function handleGerarPDF() {
     if (!draft) return;
     setGerando(true);
     try {
-      // Import dinamico — so carrega o @react-pdf quando clicar em Gerar PDF
       const { downloadAprPdf } = await import("@/features/apr/pdf/generateAprPdf");
       await downloadAprPdf(draft);
       await finalizar();
       toast.success("PDF gerado e baixado com sucesso!");
-      navigate("/");
+      navigate("/relatorio-pronto");
     } catch (error) {
       console.error(error);
       toast.error("Erro ao gerar PDF. Tente novamente.");
@@ -51,8 +60,9 @@ export function RevisaoPage() {
                 GERACAO DE PDF BLOQUEADA
               </p>
               <p className="text-sm text-destructive/90 mt-1">
-                {recusa.detalhes.length} controle(s) critico(s) com resposta NEGATIVA.
-                Use o Dever de Recusa para registrar formalmente a interrupcao da atividade.
+                {recusa.detalhes.length} controle(s) critico(s) com resposta
+                NEGATIVA. Use o Dever de Recusa para registrar formalmente a
+                interrupcao da atividade.
               </p>
               <Button
                 variant="destructive"
@@ -86,8 +96,14 @@ export function RevisaoPage() {
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
               {Object.entries(draft.contexto).map(([k, v]) => (
                 <div key={k} className="flex gap-2">
-                  <dt className="text-muted-foreground capitalize min-w-[80px]">{k}:</dt>
-                  <dd className="font-medium">{v || <span className="text-destructive">nao preenchido</span>}</dd>
+                  <dt className="text-muted-foreground capitalize min-w-[80px]">
+                    {k}:
+                  </dt>
+                  <dd className="font-medium">
+                    {v || (
+                      <span className="text-destructive">nao preenchido</span>
+                    )}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -104,7 +120,10 @@ export function RevisaoPage() {
             </h3>
             <ul className="space-y-1 text-sm">
               {draft.controlesTopo.map((c) => (
-                <li key={c.id} className="flex items-center justify-between gap-2">
+                <li
+                  key={c.id}
+                  className="flex items-center justify-between gap-2"
+                >
                   <span>{c.texto}</span>
                   <Badge
                     variant={
@@ -115,7 +134,11 @@ export function RevisaoPage() {
                           : "outline"
                     }
                   >
-                    {c.resposta === "sim" ? "SIM" : c.resposta === "nao" ? "NAO" : "-"}
+                    {c.resposta === "sim"
+                      ? "SIM"
+                      : c.resposta === "nao"
+                        ? "NAO"
+                        : "-"}
                   </Badge>
                 </li>
               ))}
@@ -124,17 +147,24 @@ export function RevisaoPage() {
 
           <div>
             <h3 className="text-sm font-semibold mb-2">
-              Triagem - {triagem.totalAplicaveis} aplicavel(is), {triagem.naoAplicaveis.length} N/A
+              Triagem - {triagem.totalAplicaveis} aplicavel(is),{" "}
+              {triagem.naoAplicaveis.length} N/A
             </h3>
             <ul className="space-y-1 text-sm">
               {triagem.aplicaveis.map((r) => (
-                <li key={r.id} className="flex items-center justify-between gap-2">
+                <li
+                  key={r.id}
+                  className="flex items-center justify-between gap-2"
+                >
                   <span>{r.nome}</span>
                   <Badge variant="default">Aplicavel</Badge>
                 </li>
               ))}
               {triagem.naoAplicaveis.map((r) => (
-                <li key={r.id} className="flex items-center justify-between gap-2">
+                <li
+                  key={r.id}
+                  className="flex items-center justify-between gap-2"
+                >
                   <span className="text-muted-foreground">{r.nome}</span>
                   <Badge variant="secondary">N/A</Badge>
                 </li>
@@ -156,41 +186,78 @@ export function RevisaoPage() {
                 ) : null;
               })}
               {draft.epis.selecionados.length === 0 && (
-                <span className="text-sm text-muted-foreground">Nenhum EPI selecionado.</span>
+                <span className="text-sm text-muted-foreground">
+                  Nenhum EPI selecionado.
+                </span>
               )}
             </div>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold mb-2">Emergencia</h3>
+            <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+              Emergencia
+              {assinaturaOk ? (
+                <CheckCircle2 className="h-4 w-4 text-success" />
+              ) : (
+                <AlertCircle className="h-4 w-4 text-destructive" />
+              )}
+            </h3>
             <dl className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
               <div>
                 <dt className="text-muted-foreground">Bombeiro:</dt>
-                <dd className="font-medium">{draft.emergencia.bombeiro || "-"}</dd>
+                <dd className="font-medium">
+                  {draft.emergencia.bombeiro || "-"}
+                </dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Ambulancia:</dt>
-                <dd className="font-medium">{draft.emergencia.ambulancia || "-"}</dd>
+                <dd className="font-medium">
+                  {draft.emergencia.ambulancia || "-"}
+                </dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Assinatura:</dt>
-                <dd className="font-medium">{draft.emergencia.assinatura || "-"}</dd>
+                <dd className="font-medium">
+                  {draft.emergencia.assinaturaDataUrl
+                    ? "Desenhada"
+                    : draft.emergencia.assinatura || "-"}
+                </dd>
               </div>
             </dl>
           </div>
         </CardContent>
       </Card>
 
+      {!assinaturaOk && (
+        <div className="rounded-lg border border-warning bg-warning/10 p-4 text-sm flex items-start gap-3">
+          <AlertCircle className="h-5 w-5 text-warning flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="font-semibold">Assinatura pendente</p>
+            <p className="text-muted-foreground mt-0.5">
+              Volte ao passo anterior (Riscos locais + Emergencia) e assine a
+              APR para poder gerar o PDF.
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-2"
+              onClick={() => navigate("/locais")}
+            >
+              Ir para Emergencia
+            </Button>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-wrap gap-2 justify-end">
-        <Button
-          variant="outline"
-          onClick={() => navigate("/recusa")}
-        >
+        <Button variant="outline" onClick={() => navigate("/recusa")}>
           Registrar Dever de Recusa
         </Button>
         <Button
           size="lg"
-          disabled={!contextoOk || !topOk || recusa.temRecusa || gerando}
+          disabled={
+            !contextoOk || !topOk || !assinaturaOk || recusa.temRecusa || gerando
+          }
           onClick={handleGerarPDF}
         >
           {gerando ? (

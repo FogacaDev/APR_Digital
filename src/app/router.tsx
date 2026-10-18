@@ -15,7 +15,7 @@ import { ThemeToggle } from "@/app/theme-toggle";
 import { OnboardingTour } from "@/app/onboarding-tour";
 import { Footer } from "@/app/footer";
 import { Loader2, AlertCircle } from "lucide-react";
-import { PDFPreviewPage } from "@/features/apr/pages/PDFPreviewPage";
+
 import { HomePage } from "@/features/apr/pages/HomePage";
 import { ContextoPage } from "@/features/apr/pages/ContextoPage";
 import { TriagemRiscosPage } from "@/features/apr/pages/TriagemRiscosPage";
@@ -24,6 +24,7 @@ import { EpisPage } from "@/features/apr/pages/EpisPage";
 import { LocaisEmergenciaPage } from "@/features/apr/pages/LocaisEmergenciaPage";
 import { RevisaoPage } from "@/features/apr/pages/RevisaoPage";
 import { DeverRecusaPage } from "@/features/apr/pages/DeverRecusaPage";
+import { RelatorioProntoPage } from "@/features/apr/pages/RelatorioProntoPage";
 
 const STEPS = [
   { path: "/contexto", label: "Contexto" },
@@ -35,11 +36,12 @@ const STEPS = [
   { path: "/recusa", label: "Dever de Recusa" },
 ];
 
-const SHOW_FOOTER_ON = ["/", "/revisao", "/recusa"];
+const SHOW_FOOTER_ON = ["/", "/revisao", "/recusa", "/relatorio-pronto"];
 
 function stepIndexFromPath(pathname: string): number {
   if (pathname === "/") return 0;
   if (pathname.startsWith("/risco")) return 3;
+  if (pathname === "/relatorio-pronto") return 7;
   const idx = STEPS.findIndex((s) => s.path === pathname);
   if (idx >= 0) return idx + 1;
   return 1;
@@ -54,6 +56,7 @@ function Layout() {
   const currentStep = stepIndexFromPath(location.pathname);
   const isHome = location.pathname === "/";
   const isRecusaPage = location.pathname === "/recusa";
+  const isRelatorio = location.pathname === "/relatorio-pronto";
   const showFooter = SHOW_FOOTER_ON.includes(location.pathname);
 
   useEffect(() => {
@@ -94,10 +97,12 @@ function Layout() {
             </p>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            {!isHome && (
-              <span>{triagem.totalAplicaveis} risco(s) aplicavel(is)</span>
+            {!isHome && !isRelatorio && (
+              <span>
+                {triagem.totalAplicaveis} risco(s) aplicavel(is)
+              </span>
             )}
-            {recusa.temRecusa && (
+            {recusa.temRecusa && !isRelatorio && (
               <span className="inline-flex items-center gap-1 rounded-full bg-destructive px-2 py-0.5 text-destructive-foreground font-semibold">
                 <AlertCircle className="h-3 w-3" />
                 Recusa
@@ -109,7 +114,7 @@ function Layout() {
       </header>
 
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-6">
-        {!isHome && (
+        {!isHome && !isRelatorio && (
           <div className="mb-6 space-y-6">
             <StepProgress
               current={currentStep}
@@ -123,7 +128,7 @@ function Layout() {
           <Outlet />
         </div>
 
-        {!isRecusaPage && !isHome && (
+        {!isRecusaPage && !isHome && !isRelatorio && (
           <div className="fixed bottom-0 left-0 right-0 z-10 bg-background/95 backdrop-blur border-t">
             <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
               <Button
@@ -155,7 +160,6 @@ function Layout() {
         )}
       </main>
 
-      {/* Footer SEMPRE no rodapé, abaixo do main */}
       {showFooter && (
         <div className="border-t bg-card">
           <div className="max-w-4xl mx-auto">
@@ -173,6 +177,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <div className="p-6 text-center text-destructive">Erro ao carregar a pagina. Recarregue o navegador.</div>,
     children: [
       { index: true, element: <HomePage /> },
       { path: "contexto", element: <ContextoPage /> },
@@ -183,7 +188,7 @@ const router = createBrowserRouter([
       { path: "locais", element: <LocaisEmergenciaPage /> },
       { path: "revisao", element: <RevisaoPage /> },
       { path: "recusa", element: <DeverRecusaPage /> },
-      { path: "debug/pdf", element: <PDFPreviewPage /> },
+      { path: "relatorio-pronto", element: <RelatorioProntoPage /> },
     ],
   },
 ]);
