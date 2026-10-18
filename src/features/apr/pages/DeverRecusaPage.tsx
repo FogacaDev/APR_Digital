@@ -1,5 +1,6 @@
 ﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/lib/ui/card";
 import { Button } from "@/lib/ui/button";
 import { Input } from "@/lib/ui/input";
@@ -7,7 +8,7 @@ import { Label } from "@/lib/ui/label";
 import { Badge } from "@/lib/ui/badge";
 import { useAprForm } from "@/features/apr/hooks/useAprForm";
 import { useDeverRecusa } from "@/features/apr/hooks/useDeverRecusa";
-import { AlertCircle, CheckCircle2, RotateCcw } from "lucide-react";
+import { AlertCircle, CheckCircle2, RotateCcw, FileText, Loader2 } from "lucide-react";
 
 export function DeverRecusaPage() {
   const navigate = useNavigate();
@@ -15,10 +16,26 @@ export function DeverRecusaPage() {
   const recusa = useDeverRecusa();
   const [motivo, setMotivo] = useState(draft?.recusa?.motivo ?? "");
   const [assinatura, setAssinatura] = useState("");
+  const [gerando, setGerando] = useState(false);
 
   if (!draft) return null;
 
   const jaRegistrada = draft.status === "recusado" && draft.recusa !== null;
+
+  async function handleBaixarPDF() {
+    if (!draft) return;
+    setGerando(true);
+    try {
+      const { downloadAprPdf } = await import("@/features/apr/pdf/generateAprPdf");
+      await downloadAprPdf(draft);
+      toast.success("PDF de recusa baixado!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao gerar PDF.");
+    } finally {
+      setGerando(false);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -35,19 +52,39 @@ export function DeverRecusaPage() {
           {jaRegistrada ? (
             <div className="rounded-lg border border-success bg-success/10 p-4 flex items-start gap-3">
               <CheckCircle2 className="h-6 w-6 text-success flex-shrink-0 mt-0.5" />
-              <div>
+              <div className="flex-1">
                 <p className="font-bold text-success">Dever de recusa registrado</p>
                 <p className="text-sm mt-1">
-                  Status: <strong>{draft.status}</strong> · Registrado em{" "}
+                  Status: <strong>{draft.status}</strong> - Registrado em{" "}
                   {new Date(draft.recusa!.registradoEm).toLocaleString("pt-BR")}
                 </p>
                 <p className="text-sm mt-1">
                   Motivo: <em>{draft.recusa!.motivo}</em>
                 </p>
-                <Button variant="outline" size="sm" className="mt-3" onClick={resetApr}>
-                  <RotateCcw className="h-4 w-4" />
-                  Iniciar nova APR
-                </Button>
+                <div className="flex flex-wrap gap-2 mt-3">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    disabled={gerando}
+                    onClick={handleBaixarPDF}
+                  >
+                    {gerando ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Gerando...
+                      </>
+                    ) : (
+                      <>
+                        <FileText className="h-4 w-4" />
+                        Baixar PDF de Recusa
+                      </>
+                    )}
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={resetApr}>
+                    <RotateCcw className="h-4 w-4" />
+                    Iniciar nova APR
+                  </Button>
+                </div>
               </div>
             </div>
           ) : (
@@ -122,12 +159,7 @@ export function DeverRecusaPage() {
 
               <p className="text-xs text-muted-foreground">
                 Ao registrar, a APR sera marcada como <strong>recusada</strong> e
-                o PDF de recusa podera ser gerado (disponivel no Bloco 5).
-                {assinatura && (
-                  <>
-                    {" "}Assinatura capturada: <strong>{assinatura}</strong>
-                  </>
-                )}
+                o PDF podera ser gerado em seguida.
               </p>
             </>
           )}

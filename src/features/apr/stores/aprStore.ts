@@ -27,6 +27,8 @@ const emptyEmergencia = (): EmergenciaData => ({
   bombeiro: "",
   ambulancia: "",
   assinatura: "",
+  assinaturaDataUrl: null,
+  assinaturaTimestamp: null,
 });
 
 const emptyContexto = (): ContextoData => ({
@@ -83,6 +85,7 @@ interface AprState {
   removeRiscoLocal: (index: number) => void;
   setRiscoLocalCampo: (index: number, campo: keyof RiscoLocal, valor: string) => void;
   setEmergencia: (campo: keyof EmergenciaData, valor: string) => void;
+  setAssinatura: (dataUrl: string | null) => void;
   registrarRecusa: (recusa: RecusaData) => void;
   finalizar: () => Promise<void>;
   recusar: () => Promise<void>;
@@ -342,6 +345,24 @@ export const useAprStore = create<AprState>()((set, get) => ({
     scheduleSave(get);
   },
 
+  setAssinatura: (dataUrl) => {
+    set((state) => {
+      if (!state.draft) return state;
+      return {
+        draft: {
+          ...state.draft,
+          emergencia: {
+            ...state.draft.emergencia,
+            assinaturaDataUrl: dataUrl,
+            assinaturaTimestamp: dataUrl ? Date.now() : null,
+          },
+          updatedAt: Date.now(),
+        },
+      };
+    });
+    scheduleSave(get);
+  },
+
   registrarRecusa: (recusa) => {
     set((state) => {
       if (!state.draft) return state;
@@ -360,11 +381,7 @@ export const useAprStore = create<AprState>()((set, get) => ({
   finalizar: async () => {
     const { draft } = get();
     if (!draft) return;
-    const finalizado: AprDraft = {
-      ...draft,
-      status: "finalizado",
-      updatedAt: Date.now(),
-    };
+    const finalizado: AprDraft = { ...draft, status: "finalizado", updatedAt: Date.now() };
     set({ draft: finalizado });
     await aprRepository.save(finalizado);
   },
@@ -372,11 +389,7 @@ export const useAprStore = create<AprState>()((set, get) => ({
   recusar: async () => {
     const { draft } = get();
     if (!draft) return;
-    const recusado: AprDraft = {
-      ...draft,
-      status: "recusado",
-      updatedAt: Date.now(),
-    };
+    const recusado: AprDraft = { ...draft, status: "recusado", updatedAt: Date.now() };
     set({ draft: recusado });
     await aprRepository.save(recusado);
   },

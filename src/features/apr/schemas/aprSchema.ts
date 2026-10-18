@@ -1,4 +1,4 @@
-import { z } from "zod";
+﻿import { z } from "zod";
 import { getRiskById } from "@/features/apr/data/risks";
 
 export const SCHEMA_VERSION = 1;
@@ -16,9 +16,7 @@ const respostaRiscoSchema = z
     (data) =>
       !data.secaoNaoAplica ||
       Object.values(data.controles).every((v) => v === "nao_aplica"),
-    {
-      message: "Seção marcada como N/A deve ter todos os controles como N/A",
-    },
+    { message: "Seção marcada como N/A deve ter todos os controles como N/A" }
   );
 
 const contextoDataSchema = z.object({
@@ -51,6 +49,8 @@ const emergenciaDataSchema = z.object({
   bombeiro: z.string(),
   ambulancia: z.string(),
   assinatura: z.string(),
+  assinaturaDataUrl: z.string().nullable(),
+  assinaturaTimestamp: z.number().nullable(),
 });
 
 const recusaDataSchema = z.object({
@@ -69,7 +69,7 @@ export const aprDraftSchema = z.object({
   controlesTopo: z.array(controleTopoRespostaSchema),
   triagem: z.record(
     z.string(),
-    z.enum(["aplicavel", "nao_aplicavel", "nao_selecionado"]),
+    z.enum(["aplicavel", "nao_aplicavel", "nao_selecionado"])
   ),
   respostas: z.record(z.string(), respostaRiscoSchema),
   epis: episDataSchema,
@@ -80,24 +80,15 @@ export const aprDraftSchema = z.object({
 
 export type AprDraftSchema = z.infer<typeof aprDraftSchema>;
 
-// =============================================================================
-// Validação de "pronto para gerar PDF"
-// =============================================================================
-
 export interface ValidationIssue {
   tipo: "erro" | "aviso";
   campo: string;
   mensagem: string;
 }
 
-/**
- * Verifica se o draft está completo o suficiente para gerar PDF.
- * Diferente do schema Zod (que valida estrutura), este valida regras de negócio.
- */
 export function validateForPdf(draft: AprDraftSchema): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
 
-  // 1. Contexto obrigatório
   for (const campo of [
     "nome",
     "area",
@@ -115,7 +106,6 @@ export function validateForPdf(draft: AprDraftSchema): ValidationIssue[] {
     }
   }
 
-  // 2. Controles de topo obrigatórios
   for (const c of draft.controlesTopo) {
     if (c.resposta === null) {
       issues.push({
@@ -126,7 +116,6 @@ export function validateForPdf(draft: AprDraftSchema): ValidationIssue[] {
     }
   }
 
-  // 3. Riscos aplicáveis com todos os controles respondidos
   for (const [riskId, estado] of Object.entries(draft.triagem)) {
     if (estado !== "aplicavel") continue;
     const risk = getRiskById(riskId);
@@ -162,24 +151,18 @@ export function validateForPdf(draft: AprDraftSchema): ValidationIssue[] {
   return issues;
 }
 
-/**
- * Detecta se há algum controle obrigatório com resposta "NÃO" (dispara Dever de Recusa).
- * N/A nunca dispara.
- */
 export function detectDeverDeRecusa(draft: AprDraftSchema): {
   temRecusa: boolean;
   controlesComFalha: string[];
 } {
   const controlesComFalha: string[] = [];
 
-  // Controles de topo
   for (const c of draft.controlesTopo) {
     if (c.resposta === "nao") {
       controlesComFalha.push(`topo:${c.id}`);
     }
   }
 
-  // Controles críticos dos riscos aplicáveis
   for (const [riskId, estado] of Object.entries(draft.triagem)) {
     if (estado !== "aplicavel") continue;
     const risk = getRiskById(riskId);

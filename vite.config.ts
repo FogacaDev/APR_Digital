@@ -1,4 +1,4 @@
-import path from "node:path";
+﻿import path from "node:path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
@@ -16,6 +16,8 @@ export default defineConfig({
         clientsClaim: true,
         skipWaiting: true,
         navigateFallback: "/index.html",
+        // Aumenta o limite para 4 MiB (o PDF em dev fica ~2.7 MB)
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },
       devOptions: {
         enabled: false,
@@ -30,5 +32,17 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: false,
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Separa o @react-pdf/renderer num chunk que so carrega quando usado
+          "react-pdf": ["@react-pdf/renderer"],
+          // Separa o driver.js (tour) — so e usado uma vez
+          "driver": ["driver.js"],
+        },
+      },
+    },
   },
 });

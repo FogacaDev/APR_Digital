@@ -15,7 +15,7 @@ import { ThemeToggle } from "@/app/theme-toggle";
 import { OnboardingTour } from "@/app/onboarding-tour";
 import { Footer } from "@/app/footer";
 import { Loader2, AlertCircle } from "lucide-react";
-
+import { PDFPreviewPage } from "@/features/apr/pages/PDFPreviewPage";
 import { HomePage } from "@/features/apr/pages/HomePage";
 import { ContextoPage } from "@/features/apr/pages/ContextoPage";
 import { TriagemRiscosPage } from "@/features/apr/pages/TriagemRiscosPage";
@@ -95,9 +95,7 @@ function Layout() {
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             {!isHome && (
-              <span>
-                {triagem.totalAplicaveis} risco(s) aplicavel(is)
-              </span>
+              <span>{triagem.totalAplicaveis} risco(s) aplicavel(is)</span>
             )}
             {recusa.temRecusa && (
               <span className="inline-flex items-center gap-1 rounded-full bg-destructive px-2 py-0.5 text-destructive-foreground font-semibold">
@@ -185,6 +183,7 @@ const router = createBrowserRouter([
       { path: "locais", element: <LocaisEmergenciaPage /> },
       { path: "revisao", element: <RevisaoPage /> },
       { path: "recusa", element: <DeverRecusaPage /> },
+      { path: "debug/pdf", element: <PDFPreviewPage /> },
     ],
   },
 ]);

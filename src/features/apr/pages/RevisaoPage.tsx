@@ -1,22 +1,44 @@
-﻿import { useNavigate } from "react-router-dom";
+﻿import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/lib/ui/card";
 import { Button } from "@/lib/ui/button";
 import { Badge } from "@/lib/ui/badge";
 import { useAprForm } from "@/features/apr/hooks/useAprForm";
 import { useTriagem } from "@/features/apr/hooks/useTriagem";
 import { useDeverRecusa } from "@/features/apr/hooks/useDeverRecusa";
-import { AlertCircle, CheckCircle2, FileText } from "lucide-react";
+import { AlertCircle, CheckCircle2, FileText, Loader2 } from "lucide-react";
 import { getEpiById } from "@/features/apr/data/epis";
 
 export function RevisaoPage() {
   const navigate = useNavigate();
-  const { draft } = useAprForm();
+  const { draft, finalizar } = useAprForm();
   const triagem = useTriagem();
   const recusa = useDeverRecusa();
+  const [gerando, setGerando] = useState(false);
+
   if (!draft) return null;
 
   const contextoOk = Object.values(draft.contexto).every((v) => v.trim().length > 0);
   const topOk = draft.controlesTopo.every((c) => c.resposta !== null);
+
+  async function handleGerarPDF() {
+    if (!draft) return;
+    setGerando(true);
+    try {
+      // Import dinamico — so carrega o @react-pdf quando clicar em Gerar PDF
+      const { downloadAprPdf } = await import("@/features/apr/pdf/generateAprPdf");
+      await downloadAprPdf(draft);
+      await finalizar();
+      toast.success("PDF gerado e baixado com sucesso!");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao gerar PDF. Tente novamente.");
+    } finally {
+      setGerando(false);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -93,7 +115,7 @@ export function RevisaoPage() {
                           : "outline"
                     }
                   >
-                    {c.resposta === "sim" ? "SIM" : c.resposta === "nao" ? "NAO" : "—"}
+                    {c.resposta === "sim" ? "SIM" : c.resposta === "nao" ? "NAO" : "-"}
                   </Badge>
                 </li>
               ))}
@@ -102,7 +124,7 @@ export function RevisaoPage() {
 
           <div>
             <h3 className="text-sm font-semibold mb-2">
-              Triagem — {triagem.totalAplicaveis} aplicavel(is), {triagem.naoAplicaveis.length} N/A
+              Triagem - {triagem.totalAplicaveis} aplicavel(is), {triagem.naoAplicaveis.length} N/A
             </h3>
             <ul className="space-y-1 text-sm">
               {triagem.aplicaveis.map((r) => (
@@ -122,7 +144,7 @@ export function RevisaoPage() {
 
           <div>
             <h3 className="text-sm font-semibold mb-2">
-              EPIs — {draft.epis.selecionados.length} selecionado(s)
+              EPIs - {draft.epis.selecionados.length} selecionado(s)
             </h3>
             <div className="flex flex-wrap gap-1.5">
               {draft.epis.selecionados.map((id) => {
@@ -144,15 +166,15 @@ export function RevisaoPage() {
             <dl className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
               <div>
                 <dt className="text-muted-foreground">Bombeiro:</dt>
-                <dd className="font-medium">{draft.emergencia.bombeiro || "—"}</dd>
+                <dd className="font-medium">{draft.emergencia.bombeiro || "-"}</dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Ambulancia:</dt>
-                <dd className="font-medium">{draft.emergencia.ambulancia || "—"}</dd>
+                <dd className="font-medium">{draft.emergencia.ambulancia || "-"}</dd>
               </div>
               <div>
                 <dt className="text-muted-foreground">Assinatura:</dt>
-                <dd className="font-medium">{draft.emergencia.assinatura || "—"}</dd>
+                <dd className="font-medium">{draft.emergencia.assinatura || "-"}</dd>
               </div>
             </dl>
           </div>
@@ -168,16 +190,20 @@ export function RevisaoPage() {
         </Button>
         <Button
           size="lg"
-          disabled={!contextoOk || !topOk || recusa.temRecusa}
-          onClick={() => {
-            alert(
-              "Geracao de PDF sera implementada no Bloco 5.\n\n" +
-                "No momento, todos os dados estao validados e salvos no IndexedDB."
-            );
-          }}
+          disabled={!contextoOk || !topOk || recusa.temRecusa || gerando}
+          onClick={handleGerarPDF}
         >
-          <FileText className="h-4 w-4" />
-          Gerar PDF
+          {gerando ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Gerando PDF...
+            </>
+          ) : (
+            <>
+              <FileText className="h-4 w-4" />
+              Gerar PDF
+            </>
+          )}
         </Button>
       </div>
     </div>
