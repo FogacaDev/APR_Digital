@@ -75,6 +75,24 @@ function Layout() {
     );
   }
 
+  const handleVoltar = () => {
+    if (location.pathname === "/contexto") {
+      navigate("/");
+    } else if (location.pathname === "/epis") {
+      const ultimoRisco = triagem.aplicaveis[triagem.aplicaveis.length - 1];
+      if (ultimoRisco) {
+        navigate(`/risco/${ultimoRisco.id}`);
+      } else {
+        navigate("/triagem");
+      }
+    } else if (location.pathname.startsWith("/risco")) {
+      navigate("/triagem");
+    } else {
+      const prevStep = STEPS[currentStep - 2];
+      navigate(prevStep ? prevStep.path : "/");
+    }
+  };
+
   return (
     <div className="min-h-dvh bg-background text-foreground flex flex-col">
       <header className="border-b bg-card sticky top-0 z-10">
@@ -132,20 +150,10 @@ function Layout() {
         {!isRecusaPage && !isHome && !isRelatorio && (
           <div className="fixed bottom-0 left-0 right-0 z-10 bg-background/95 backdrop-blur border-t">
             <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  if (currentStep === 1) {
-                    navigate("/");
-                    return;
-                  }
-                  navigate(STEPS[currentStep - 2]?.path ?? "/");
-                }}
-              >
+              <Button variant="outline" onClick={handleVoltar}>
                 Voltar
               </Button>
 
-              {/* Se estiver na tela de Revisao, o botao "Proximo" vira "Dever de Recusa" */}
               {isRevisao ? (
                 <Button
                   variant="destructive"
@@ -162,7 +170,16 @@ function Layout() {
                       navigate("/recusa");
                       return;
                     }
-                    navigate(STEPS[currentStep]?.path ?? "/contexto");
+                    if (location.pathname === "/triagem") {
+                      const primeiroRisco = triagem.aplicaveis[0];
+                      if (primeiroRisco) {
+                        navigate(`/risco/${primeiroRisco.id}`);
+                      } else {
+                        navigate("/epis");
+                      }
+                    } else {
+                      navigate(STEPS[currentStep]?.path ?? "/contexto");
+                    }
                   }}
                 >
                   {currentStep >= STEPS.length ? "Ir para Recusa" : "Proximo"}
