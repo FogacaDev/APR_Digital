@@ -13,8 +13,10 @@ import { useTriagem } from "@/features/apr/hooks/useTriagem";
 import { useDeverRecusa } from "@/features/apr/hooks/useDeverRecusa";
 import { ThemeToggle } from "@/app/theme-toggle";
 import { OnboardingTour } from "@/app/onboarding-tour";
+import { Footer } from "@/app/footer";
 import { Loader2, AlertCircle } from "lucide-react";
 
+import { HomePage } from "@/features/apr/pages/HomePage";
 import { ContextoPage } from "@/features/apr/pages/ContextoPage";
 import { TriagemRiscosPage } from "@/features/apr/pages/TriagemRiscosPage";
 import { ChecklistRiscoPage } from "@/features/apr/pages/ChecklistRiscoPage";
@@ -33,11 +35,13 @@ const STEPS = [
   { path: "/recusa", label: "Dever de Recusa" },
 ];
 
+const SHOW_FOOTER_ON = ["/", "/revisao", "/recusa"];
+
 function stepIndexFromPath(pathname: string): number {
+  if (pathname === "/") return 0;
   if (pathname.startsWith("/risco")) return 3;
   const idx = STEPS.findIndex((s) => s.path === pathname);
   if (idx >= 0) return idx + 1;
-  if (pathname === "/") return 1;
   return 1;
 }
 
@@ -48,6 +52,9 @@ function Layout() {
   const triagem = useTriagem();
   const recusa = useDeverRecusa();
   const currentStep = stepIndexFromPath(location.pathname);
+  const isHome = location.pathname === "/";
+  const isRecusaPage = location.pathname === "/recusa";
+  const showFooter = SHOW_FOOTER_ON.includes(location.pathname);
 
   useEffect(() => {
     hydrate().catch(() => {});
@@ -64,22 +71,34 @@ function Layout() {
     );
   }
 
-  const isRecusaPage = location.pathname === "/recusa";
-
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div className="min-h-dvh bg-background text-foreground flex flex-col">
       <header className="border-b bg-card sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-lg font-bold text-primary leading-tight">APR Digital</h1>
+            <h1 className="text-lg font-bold text-primary leading-tight">
+              {isHome ? (
+                "APR Digital"
+              ) : (
+                <button
+                  onClick={() => navigate("/")}
+                  className="hover:underline"
+                  aria-label="Voltar para a home"
+                >
+                  APR Digital
+                </button>
+              )}
+            </h1>
             <p className="text-[10px] text-muted-foreground">
               Gerenciamento de Risco Critico
             </p>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>
-              {triagem.totalAplicaveis} risco(s) aplicavel(is)
-            </span>
+            {!isHome && (
+              <span>
+                {triagem.totalAplicaveis} risco(s) aplicavel(is)
+              </span>
+            )}
             {recusa.temRecusa && (
               <span className="inline-flex items-center gap-1 rounded-full bg-destructive px-2 py-0.5 text-destructive-foreground font-semibold">
                 <AlertCircle className="h-3 w-3" />
@@ -91,25 +110,33 @@ function Layout() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pb-24">
-        <StepProgress
-          current={currentStep}
-          total={STEPS.length}
-          label={STEPS[currentStep - 1]?.label}
-        />
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-6">
+        {!isHome && (
+          <div className="mb-6 space-y-6">
+            <StepProgress
+              current={currentStep}
+              total={STEPS.length}
+              label={STEPS[currentStep - 1]?.label}
+            />
+          </div>
+        )}
 
-        <Outlet />
+        <div className="space-y-6">
+          <Outlet />
+        </div>
 
-        {!isRecusaPage && (
+        {!isRecusaPage && !isHome && (
           <div className="fixed bottom-0 left-0 right-0 z-10 bg-background/95 backdrop-blur border-t">
             <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
               <Button
                 variant="outline"
                 onClick={() => {
-                  if (currentStep === 1) return;
-                  navigate(STEPS[currentStep - 2]?.path ?? "/contexto");
+                  if (currentStep === 1) {
+                    navigate("/");
+                    return;
+                  }
+                  navigate(STEPS[currentStep - 2]?.path ?? "/");
                 }}
-                disabled={currentStep === 1}
               >
                 Voltar
               </Button>
@@ -130,6 +157,15 @@ function Layout() {
         )}
       </main>
 
+      {/* Footer SEMPRE no rodapé, abaixo do main */}
+      {showFooter && (
+        <div className="border-t bg-card">
+          <div className="max-w-4xl mx-auto">
+            <Footer />
+          </div>
+        </div>
+      )}
+
       <OnboardingTour />
     </div>
   );
@@ -140,7 +176,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <ContextoPage /> },
+      { index: true, element: <HomePage /> },
       { path: "contexto", element: <ContextoPage /> },
       { path: "triagem", element: <TriagemRiscosPage /> },
       { path: "risco/:riskId", element: <ChecklistRiscoPage /> },
