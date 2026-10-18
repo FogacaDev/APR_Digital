@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { PrivacyNotice } from "@/features/apr/legal/PrivacyNotice";
 import { useAprForm } from "@/features/apr/hooks/useAprForm";
 import { FileText, ClipboardList, RotateCcw, ArrowRight, Shield, ExternalLink } from "lucide-react";
+import { PwaInstallPrompt } from "@/app/pwa-install-prompt";
 
 const CONSENT_KEY = "apr-digital-lgpd-consent";
 
@@ -168,6 +169,9 @@ export function HomePage() {
       </Dialog>
 
       <PrivacyNotice open={mostrarAviso} onOpenChange={setMostrarAviso} />
+      
+      {/* Banner de instalacao PWA */}
+      <PwaInstallPrompt />
     </div>
   );
 }
