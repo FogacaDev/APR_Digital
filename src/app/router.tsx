@@ -11,8 +11,10 @@ import { StepProgress } from "@/features/apr/components/StepProgress";
 import { useAprForm } from "@/features/apr/hooks/useAprForm";
 import { useTriagem } from "@/features/apr/hooks/useTriagem";
 import { useDeverRecusa } from "@/features/apr/hooks/useDeverRecusa";
-import { Loader2, AlertCircle } from "lucide-react";
 import { ThemeToggle } from "@/app/theme-toggle";
+import { OnboardingTour } from "@/app/onboarding-tour";
+import { Loader2, AlertCircle } from "lucide-react";
+
 import { ContextoPage } from "@/features/apr/pages/ContextoPage";
 import { TriagemRiscosPage } from "@/features/apr/pages/TriagemRiscosPage";
 import { ChecklistRiscoPage } from "@/features/apr/pages/ChecklistRiscoPage";
@@ -69,15 +71,15 @@ function Layout() {
       <header className="border-b bg-card sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-lg font-bold text-primary leading-tight">
-              APR Digital
-            </h1>
+            <h1 className="text-lg font-bold text-primary leading-tight">APR Digital</h1>
             <p className="text-[10px] text-muted-foreground">
               Gerenciamento de Risco Critico
             </p>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>{triagem.totalAplicaveis} risco(s) aplicavel(is)</span>
+            <span>
+              {triagem.totalAplicaveis} risco(s) aplicavel(is)
+            </span>
             {recusa.temRecusa && (
               <span className="inline-flex items-center gap-1 rounded-full bg-destructive px-2 py-0.5 text-destructive-foreground font-semibold">
                 <AlertCircle className="h-3 w-3" />
@@ -102,18 +104,17 @@ function Layout() {
           <div className="fixed bottom-0 left-0 right-0 z-10 bg-background/95 backdrop-blur border-t">
             <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
               <Button
-                data-tour="next"
+                variant="outline"
                 onClick={() => {
-                  if (currentStep >= STEPS.length) {
-                    navigate("/recusa");
-                    return;
-                  }
-                  navigate(STEPS[currentStep]?.path ?? "/contexto");
+                  if (currentStep === 1) return;
+                  navigate(STEPS[currentStep - 2]?.path ?? "/contexto");
                 }}
+                disabled={currentStep === 1}
               >
                 Voltar
               </Button>
               <Button
+                data-tour="next"
                 onClick={() => {
                   if (currentStep >= STEPS.length) {
                     navigate("/recusa");
@@ -128,6 +129,8 @@ function Layout() {
           </div>
         )}
       </main>
+
+      <OnboardingTour />
     </div>
   );
 }
