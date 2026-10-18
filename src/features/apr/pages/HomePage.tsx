@@ -4,11 +4,25 @@ import { Button } from "@/lib/ui/button";
 import { Card, CardContent } from "@/lib/ui/card";
 import { Checkbox } from "@/lib/ui/checkbox";
 import { Label } from "@/lib/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/lib/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/lib/ui/dialog";
 import { PrivacyNotice } from "@/features/apr/legal/PrivacyNotice";
 import { useAprForm } from "@/features/apr/hooks/useAprForm";
-import { FileText, ClipboardList, RotateCcw, ArrowRight, Shield, ExternalLink } from "lucide-react";
-import { PwaInstallPrompt } from "@/app/pwa-install-prompt";
+import {
+  FileText,
+  ClipboardList,
+  RotateCcw,
+  ArrowRight,
+  Shield,
+  ExternalLink,
+} from "lucide-react";
+import { PwaInstallPrompt, PwaInstallButton } from "@/app/pwa-install-prompt";
 
 const CONSENT_KEY = "apr-digital-lgpd-consent";
 
@@ -51,8 +65,8 @@ export function HomePage() {
         <h1 className="text-4xl font-bold text-primary">APR Digital</h1>
         <p className="text-base text-muted-foreground max-w-lg mx-auto leading-relaxed">
           Faca sua Analise Preliminar de Risco de forma rapida e segura.
-          Identifique os riscos da sua atividade, responda os controles
-          criticos e gere o documento em PDF para compartilhar com sua equipe.
+          Identifique os riscos da sua atividade, responda os controles criticos
+          e gere o documento em PDF para compartilhar com sua equipe.
         </p>
       </div>
 
@@ -74,7 +88,9 @@ export function HomePage() {
                 variant="outline"
                 className="w-full"
                 onClick={() => {
-                  if (confirm("Isso vai apagar o rascunho atual. Tem certeza?")) {
+                  if (
+                    confirm("Isso vai apagar o rascunho atual. Tem certeza?")
+                  ) {
                     resetApr();
                   }
                 }}
@@ -92,10 +108,14 @@ export function HomePage() {
         </CardContent>
       </Card>
 
+      <div className="px-4">
+        <PwaInstallButton />
+      </div>
+
       <div className="text-center text-xs text-muted-foreground max-w-md mx-auto">
         <p>
-          O preenchimento leva cerca de 5 a 10 minutos.
-          Suas respostas sao salvas automaticamente.
+          O preenchimento leva cerca de 5 a 10 minutos. Suas respostas sao
+          salvas automaticamente.
         </p>
       </div>
 
@@ -113,22 +133,28 @@ export function HomePage() {
 
           <div className="space-y-4 text-sm">
             <p className="text-muted-foreground leading-relaxed">
-              Este app coleta dados pessoais (<strong>nome, matricula,
-              assinatura</strong>) para gerar o documento APR.
+              Este app coleta dados pessoais (
+              <strong>nome, matricula, assinatura</strong>) para gerar o
+              documento APR.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              <strong>Os dados ficam apenas neste dispositivo</strong> e nao
-              sao enviados para nenhum servidor, nuvem ou terceiro.
+              <strong>Os dados ficam apenas neste dispositivo</strong> e nao sao
+              enviados para nenhum servidor, nuvem ou terceiro.
             </p>
 
             <div className="flex items-start gap-3 rounded-lg border bg-muted/30 p-3">
               <Checkbox
                 id="lgpd-consent-inline"
                 checked={checkboxMarcado}
-                onCheckedChange={(checked) => setCheckboxMarcado(checked === true)}
+                onCheckedChange={(checked) =>
+                  setCheckboxMarcado(checked === true)
+                }
                 className="mt-0.5"
               />
-              <Label htmlFor="lgpd-consent-inline" className="text-sm cursor-pointer">
+              <Label
+                htmlFor="lgpd-consent-inline"
+                className="text-sm cursor-pointer"
+              >
                 Li e concordo com o Aviso de Privacidade
               </Label>
             </div>
@@ -147,7 +173,10 @@ export function HomePage() {
             <Button variant="outline" onClick={() => setMostrarConsent(false)}>
               Cancelar
             </Button>
-            <Button disabled={!checkboxMarcado} onClick={confirmarConsentimento}>
+            <Button
+              disabled={!checkboxMarcado}
+              onClick={confirmarConsentimento}
+            >
               Aceitar e comecar
             </Button>
           </DialogFooter>
@@ -155,7 +184,7 @@ export function HomePage() {
       </Dialog>
 
       <PrivacyNotice open={mostrarAviso} onOpenChange={setMostrarAviso} />
-      
+
       <PwaInstallPrompt />
     </div>
   );

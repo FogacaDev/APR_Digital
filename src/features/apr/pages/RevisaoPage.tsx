@@ -60,17 +60,9 @@ export function RevisaoPage() {
                 GERACAO DE PDF BLOQUEADA
               </p>
               <p className="text-sm text-destructive/90 mt-1">
-                {recusa.detalhes.length} controle(s) critico(s) com resposta
-                NEGATIVA. Use o Dever de Recusa para registrar formalmente a
-                interrupcao da atividade.
+                {recusa.detalhes.length} controle(s) critico(s) com resposta NEGATIVA.
+                Use o botao <strong>Registrar Dever de Recusa</strong> no rodape para registrar formalmente a interrupcao.
               </p>
-              <Button
-                variant="destructive"
-                className="mt-3"
-                onClick={() => navigate("/recusa")}
-              >
-                Ir para Dever de Recusa
-              </Button>
             </div>
           </div>
         </div>
@@ -249,10 +241,8 @@ export function RevisaoPage() {
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2 justify-end">
-        <Button variant="outline" onClick={() => navigate("/recusa")}>
-          Registrar Dever de Recusa
-        </Button>
+      {/* O botao de Recusa foi removido daqui, pois agora fica fixo no rodape do Layout */}
+      <div className="flex justify-end pt-4">
         <Button
           size="lg"
           disabled={

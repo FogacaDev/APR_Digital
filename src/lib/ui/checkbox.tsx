@@ -10,7 +10,7 @@ export interface CheckboxProps
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, checked, onCheckedChange, ...props }, ref) => {
     return (
-      <span className="inline-flex items-center justify-center relative">
+      <label className="inline-flex items-center justify-center relative cursor-pointer">
         <input
           ref={ref}
           type="checkbox"
@@ -30,7 +30,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         >
           {checked && <Check className="h-3.5 w-3.5" />}
         </span>
-      </span>
+      </label>
     );
   }
 );

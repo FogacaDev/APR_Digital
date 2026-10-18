@@ -53,14 +53,14 @@ export function OnboardingTour() {
   const driverRef = useRef<ReturnType<typeof driver> | null>(null);
 
   useEffect(() => {
-    if (location.pathname !== "/contexto" && location.pathname !== "/") {
+    // Só executa o tour na tela de Contexto (a primeira do wizard)
+    if (location.pathname !== "/contexto") {
       return;
     }
 
     const done = localStorage.getItem(STORAGE_KEY);
     if (done === "true") return;
 
-    // pequeno delay para o DOM montar antes de procurar os elementos
     const timer = setTimeout(() => {
       const d = driver({
         showProgress: true,

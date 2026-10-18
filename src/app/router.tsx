@@ -14,7 +14,7 @@ import { useDeverRecusa } from "@/features/apr/hooks/useDeverRecusa";
 import { ThemeToggle } from "@/app/theme-toggle";
 import { OnboardingTour } from "@/app/onboarding-tour";
 import { Footer } from "@/app/footer";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, ShieldAlert } from "lucide-react";
 
 import { HomePage } from "@/features/apr/pages/HomePage";
 import { ContextoPage } from "@/features/apr/pages/ContextoPage";
@@ -57,6 +57,7 @@ function Layout() {
   const isHome = location.pathname === "/";
   const isRecusaPage = location.pathname === "/recusa";
   const isRelatorio = location.pathname === "/relatorio-pronto";
+  const isRevisao = location.pathname === "/revisao";
   const showFooter = SHOW_FOOTER_ON.includes(location.pathname);
 
   useEffect(() => {
@@ -113,7 +114,7 @@ function Layout() {
         </div>
       </header>
 
-      <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-6">
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-6 pb-24">
         {!isHome && !isRelatorio && (
           <div className="mb-6 space-y-6">
             <StepProgress
@@ -143,18 +144,30 @@ function Layout() {
               >
                 Voltar
               </Button>
-              <Button
-                data-tour="next"
-                onClick={() => {
-                  if (currentStep >= STEPS.length) {
-                    navigate("/recusa");
-                    return;
-                  }
-                  navigate(STEPS[currentStep]?.path ?? "/contexto");
-                }}
-              >
-                {currentStep >= STEPS.length ? "Ir para Recusa" : "Proximo"}
-              </Button>
+
+              {/* Se estiver na tela de Revisao, o botao "Proximo" vira "Dever de Recusa" */}
+              {isRevisao ? (
+                <Button
+                  variant="destructive"
+                  onClick={() => navigate("/recusa")}
+                >
+                  <ShieldAlert className="h-4 w-4 mr-2" />
+                  Registrar Recusa
+                </Button>
+              ) : (
+                <Button
+                  data-tour="next"
+                  onClick={() => {
+                    if (currentStep >= STEPS.length) {
+                      navigate("/recusa");
+                      return;
+                    }
+                    navigate(STEPS[currentStep]?.path ?? "/contexto");
+                  }}
+                >
+                  {currentStep >= STEPS.length ? "Ir para Recusa" : "Proximo"}
+                </Button>
+              )}
             </div>
           </div>
         )}
