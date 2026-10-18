@@ -7,11 +7,11 @@ import type { ContextoData } from "@/types/apr";
 
 const CAMPOS: Array<{ id: keyof ContextoData; label: string; type: string }> = [
   { id: "nome", label: "Nome", type: "text" },
-  { id: "area", label: "Area", type: "text" },
+  { id: "area", label: "Área", type: "text" },
   { id: "atividade", label: "Atividade", type: "text" },
-  { id: "matricula", label: "Matricula", type: "text" },
+  { id: "matricula", label: "Matrícula", type: "text" },
   { id: "data", label: "Data", type: "date" },
-  { id: "horario", label: "Horario", type: "time" },
+  { id: "horario", label: "Horário", type: "time" },
 ];
 
 export function ContextoPage() {
@@ -20,34 +20,36 @@ export function ContextoPage() {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Contexto da atividade</CardTitle>
-          <CardDescription>
-            Identifique quem esta executando a APR, onde, o que e quando.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {CAMPOS.map((campo) => (
-              <div key={campo.id} className="space-y-1.5">
-                <Label htmlFor={campo.id}>
-                  {campo.label}
-                  <span className="text-destructive ml-0.5">*</span>
-                </Label>
-                <Input
-                  id={campo.id}
-                  type={campo.type}
-                  value={draft.contexto[campo.id]}
-                  onChange={(e) => setContexto(campo.id, e.target.value)}
-                  placeholder={`Informe ${campo.label.toLowerCase()}`}
-                  autoComplete="off"
-                />
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <div data-tour="contexto">
+        <Card>
+          <CardHeader>
+            <CardTitle>Contexto da atividade</CardTitle>
+            <CardDescription>
+              Identifique quem está executando a APR, onde, o que e quando.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {CAMPOS.map((campo) => (
+                <div key={campo.id} className="space-y-1.5">
+                  <Label htmlFor={campo.id}>
+                    {campo.label}
+                    <span className="text-destructive ml-0.5">*</span>
+                  </Label>
+                  <Input
+                    id={campo.id}
+                    type={campo.type}
+                    value={draft.contexto[campo.id]}
+                    onChange={(e) => setContexto(campo.id, e.target.value)}
+                    placeholder={`Informe ${campo.label.toLowerCase()}`}
+                    autoComplete="off"
+                  />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       <Card>
         <CardContent className="pt-6">

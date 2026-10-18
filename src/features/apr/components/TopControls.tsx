@@ -9,9 +9,9 @@ export function TopControls() {
   const temNao = draft.controlesTopo.some((c) => c.resposta === "nao");
 
   return (
-    <section className="space-y-3">
+    <section className="space-y-3" data-tour="topcontrols">
       <div className="flex items-center gap-2">
-        <h2 className="text-base font-semibold">Avaliacao inicial</h2>
+        <h2 className="text-base font-semibold">Avaliação inicial</h2>
         <span className="text-xs text-muted-foreground">
           Responda as 3 perguntas antes de prosseguir
         </span>
@@ -51,7 +51,7 @@ export function TopControls() {
                 aria-pressed={controle.resposta === "nao"}
               >
                 <XCircle className="h-4 w-4" />
-                NAO
+                NÃO
               </button>
             </div>
           </div>
@@ -63,11 +63,11 @@ export function TopControls() {
           <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
           <div className="text-sm">
             <p className="font-semibold text-destructive">
-              Controle critico com resposta NEGATIVA
+              Controle crítico com resposta NEGATIVA
             </p>
             <p className="text-destructive/90 mt-0.5">
-              Voce precisara usar o <strong>Dever de Recusa</strong> ao final
-              da pagina, ou corrigir a situacao antes de gerar o PDF.
+              Você precisará usar o <strong>Dever de Recusa</strong> ao final
+              da página, ou corrigir a situação antes de gerar o PDF.
             </p>
           </div>
         </div>

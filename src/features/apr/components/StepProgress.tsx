@@ -9,7 +9,7 @@ export interface StepProgressProps {
 export function StepProgress({ current, total, label }: StepProgressProps) {
   const pct = total > 0 ? Math.round((current / total) * 100) : 0;
   return (
-    <div className="space-y-2">
+    <div className="space-y-2" data-tour="progress">
       <div className="flex items-center justify-between text-sm">
         <span className="font-medium">
           Etapa {current} de {total}

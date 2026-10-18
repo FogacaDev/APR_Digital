@@ -102,12 +102,14 @@ function Layout() {
           <div className="fixed bottom-0 left-0 right-0 z-10 bg-background/95 backdrop-blur border-t">
             <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
               <Button
-                variant="outline"
+                data-tour="next"
                 onClick={() => {
-                  if (currentStep === 1) return;
-                  navigate(STEPS[currentStep - 2]?.path ?? "/contexto");
+                  if (currentStep >= STEPS.length) {
+                    navigate("/recusa");
+                    return;
+                  }
+                  navigate(STEPS[currentStep]?.path ?? "/contexto");
                 }}
-                disabled={currentStep === 1}
               >
                 Voltar
               </Button>
